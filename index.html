@@ -1,342 +1,739 @@
-واجهة تسجيل الدخول — Center Albaziki
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Center Albaziki</title>
 <style>
 *{
   box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+html,body{
   margin:0;
-  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:Arial,sans-serif;
+  background:#05070a;
+  color:white;
 }
 body{
-  font-family:Arial, sans-serif;
+  overflow-x:hidden;
+}
+/* الخلفية */
+.page{
   min-height:100vh;
-  background:
-    radial-gradient(circle at 50% 20%, #27303d 0%, #111722 35%, #080b11 75%);
-  color:white;
+  min-height:100dvh;
+  position:relative;
   display:flex;
   justify-content:center;
   align-items:center;
+  padding:18px;
   overflow:hidden;
+  background:
+    radial-gradient(
+      circle at 50% 12%,
+      rgba(220,175,75,.20),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #030405,
+      #11151c 48%,
+      #050608
+    );
 }
-/* إضاءة متحركة بالخلفية */
-body::before{
-  content:"";
-  position:fixed;
-  width:500px;
-  height:500px;
+/* إضاءة متحركة */
+.glow{
+  position:absolute;
+  width:280px;
+  height:280px;
   border-radius:50%;
-  background:rgba(212,160,65,.12);
-  filter:blur(100px);
-  top:-180px;
+  background:rgba(214,166,67,.12);
+  filter:blur(75px);
+  top:-100px;
   left:50%;
   transform:translateX(-50%);
-  animation:lightMove 5s ease-in-out infinite alternate;
+  animation:glow 5s ease-in-out infinite alternate;
 }
-@keyframes lightMove{
+@keyframes glow{
   from{
     transform:translateX(-50%) scale(.8);
-    opacity:.5;
+    opacity:.4;
   }
   to{
-    transform:translateX(-50%) scale(1.3);
+    transform:translateX(-50%) scale(1.25);
     opacity:1;
   }
 }
-.container{
+/* نقاط رقمية */
+.dot{
+  position:absolute;
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:#e5bd68;
+  box-shadow:0 0 12px #e5bd68;
+  opacity:.7;
+  animation:rise linear infinite;
+}
+.dot:nth-child(1){left:8%;animation-duration:9s;bottom:-10px}
+.dot:nth-child(2){left:20%;animation-duration:12s;bottom:-20px}
+.dot:nth-child(3){left:35%;animation-duration:8s;bottom:-15px}
+.dot:nth-child(4){left:52%;animation-duration:14s;bottom:-10px}
+.dot:nth-child(5){left:68%;animation-duration:10s;bottom:-20px}
+.dot:nth-child(6){left:83%;animation-duration:13s;bottom:-15px}
+.dot:nth-child(7){left:94%;animation-duration:9s;bottom:-10px}
+@keyframes rise{
+  from{
+    transform:translateY(0);
+    opacity:0;
+  }
+  20%{opacity:.8}
+  80%{opacity:.8}
+  to{
+    transform:translateY(-110vh);
+    opacity:0;
+  }
+}
+/* البطاقة */
+.card{
   width:100%;
-  max-width:500px;
-  min-height:100vh;
-  padding:30px 25px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+  max-width:430px;
   position:relative;
   z-index:2;
+  padding:24px 20px 22px;
+  border-radius:28px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.025)
+    );
+  border:1px solid rgba(224,181,91,.30);
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.75),
+    0 0 45px rgba(214,166,67,.08);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  animation:cardIn .8s ease both;
 }
-/* الشعار */
-.logo{
-  width:240px;
-  height:240px;
-  object-fit:cover;
-  border-radius:20px;
-  filter:
-    drop-shadow(0 0 15px rgba(231,181,76,.35))
-    drop-shadow(0 0 40px rgba(231,181,76,.15));
-  animation:
-    logoEnter 1.3s ease,
-    logoFloat 4s ease-in-out infinite;
-}
-@keyframes logoEnter{
+@keyframes cardIn{
   from{
     opacity:0;
-    transform:scale(.7) translateY(-40px);
+    transform:translateY(25px) scale(.97);
   }
   to{
     opacity:1;
-    transform:scale(1) translateY(0);
+    transform:translateY(0) scale(1);
   }
 }
-@keyframes logoFloat{
+/* الخط الذهبي */
+.card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:18%;
+  width:64%;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #e4ba62,
+    transparent
+  );
+  animation:line 3s ease-in-out infinite;
+}
+@keyframes line{
+  0%,100%{opacity:.25}
+  50%{opacity:1}
+}
+/* الشعار */
+.logo-wrap{
+  width:115px;
+  height:115px;
+  margin:2px auto 12px;
+  border-radius:50%;
+  padding:4px;
+  background:linear-gradient(
+    135deg,
+    #8b641e,
+    #f0cf78,
+    #9b711f
+  );
+  box-shadow:
+    0 0 30px rgba(226,181,82,.20);
+  animation:logo 4s ease-in-out infinite;
+}
+.logo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+  display:block;
+  background:#090b0f;
+}
+@keyframes logo{
   0%,100%{
     transform:translateY(0);
   }
   50%{
-    transform:translateY(-8px);
+    transform:translateY(-5px);
   }
 }
-h1{
-  margin-top:18px;
-  font-size:28px;
-  color:#e8bd68;
-  text-shadow:0 0 15px rgba(232,189,104,.35);
-  animation:fadeUp 1s ease .3s both;
+.brand{
+  text-align:center;
+  color:#e8c473;
+  font-size:21px;
+  font-weight:bold;
+  letter-spacing:2px;
 }
 .subtitle{
-  margin-top:8px;
-  color:#ddd;
-  font-size:16px;
-  animation:fadeUp 1s ease .5s both;
+  text-align:center;
+  color:#9b9b9b;
+  font-size:13px;
+  margin-top:7px;
 }
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(20px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+.welcome{
+  text-align:center;
+  font-size:25px;
+  font-weight:bold;
+  margin:22px 0 16px;
 }
 /* الأزرار */
-.login-buttons{
+.social{
   width:100%;
-  margin-top:30px;
-}
-.login-btn{
-  width:100%;
-  height:65px;
-  margin-bottom:16px;
-  border-radius:15px;
-  border:1px solid rgba(224,179,90,.55);
-  background:rgba(20,23,31,.75);
-  color:white;
-  font-size:17px;
-  cursor:pointer;
+  height:54px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.16);
+  margin-bottom:10px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:15px;
-  transition:.3s;
-  backdrop-filter:blur(10px);
-  animation:slideUp .8s ease both;
+  gap:10px;
+  font-size:15px;
+  cursor:pointer;
+  transition:.25s;
 }
-.login-btn:nth-child(1){
-  animation-delay:.7s;
-}
-.login-btn:nth-child(2){
-  animation-delay:.9s;
-}
-.login-btn:hover{
-  transform:translateY(-4px) scale(1.01);
-  border-color:#e7bd63;
-  box-shadow:0 8px 30px rgba(218,170,75,.18);
-}
-.login-btn:active{
+.social:active{
   transform:scale(.97);
 }
 .google{
-  font-size:25px;
-  font-weight:bold;
-  color:#4285F4;
+  background:#fff;
+  color:#151515;
 }
 .apple{
-  font-size:28px;
+  background:#050505;
   color:white;
 }
-@keyframes slideUp{
-  from{
-    opacity:0;
-    transform:translateY(40px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+.google-icon{
+  color:#4285f4;
+  font-weight:bold;
+  font-size:20px;
 }
-/* أو */
-.or{
-  width:100%;
+.apple-icon{
+  font-size:23px;
+}
+/* الفاصل */
+.divider{
   display:flex;
   align-items:center;
-  gap:15px;
-  margin:8px 0 20px;
-  color:#aaa;
+  gap:12px;
+  margin:17px 0;
+  color:#777;
+  font-size:13px;
 }
-.or::before,
-.or::after{
+.divider::before,
+.divider::after{
   content:"";
   height:1px;
   flex:1;
   background:linear-gradient(
     90deg,
     transparent,
-    #8d6b32,
+    #444,
     transparent
   );
 }
-/* الحقول */
-.input{
-  width:100%;
-  height:60px;
-  margin-bottom:13px;
-  padding:0 20px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(15,18,25,.75);
+/* الهاتف */
+.phone-row{
+  display:flex;
+  direction:ltr;
+  gap:8px;
+  margin-bottom:10px;
+}
+.country{
+  width:115px;
+  height:54px;
+  border-radius:13px;
+  border:1px solid #35383d;
+  background:#0c0f14;
   color:white;
-  font-size:16px;
+  padding:0 8px;
   outline:none;
-  transition:.3s;
-}
-.input:focus{
-  border-color:#e5b95e;
-  box-shadow:0 0 20px rgba(229,185,94,.12);
-}
-.input::placeholder{
-  color:#888;
-}
-/* زر الدخول */
-.main-btn{
-  width:100%;
-  height:65px;
-  margin-top:5px;
-  border:0;
-  border-radius:15px;
-  background:linear-gradient(
-    135deg,
-    #e9bf68,
-    #b77d28
-  );
-  color:white;
-  font-size:20px;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 8px 30px rgba(210,157,55,.25);
-  transition:.3s;
-  animation:pulse 3s ease-in-out infinite;
-}
-.main-btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 12px 40px rgba(210,157,55,.4);
-}
-.main-btn:active{
-  transform:scale(.97);
-}
-@keyframes pulse{
-  0%,100%{
-    box-shadow:0 8px 30px rgba(210,157,55,.2);
-  }
-  50%{
-    box-shadow:0 8px 45px rgba(210,157,55,.4);
-  }
-}
-.bottom{
-  margin-top:25px;
-  color:#aaa;
   font-size:14px;
 }
-.bottom span{
-  color:#e7b85c;
+.phone{
+  flex:1;
+  height:54px;
+  border-radius:13px;
+  border:1px solid #35383d;
+  background:#0c0f14;
+  color:white;
+  padding:0 15px;
+  font-size:16px;
+  outline:none;
+  text-align:left;
+}
+.country:focus,
+.phone:focus,
+.password:focus{
+  border-color:#dcb35c;
+  box-shadow:0 0 18px rgba(220,179,92,.10);
+}
+/* كلمة المرور */
+.password{
+  width:100%;
+  height:54px;
+  border-radius:13px;
+  border:1px solid #35383d;
+  background:#0c0f14;
+  color:white;
+  padding:0 15px;
+  font-size:16px;
+  outline:none;
+  margin-bottom:9px;
+}
+.password::placeholder,
+.phone::placeholder{
+  color:#777;
+}
+/* زر الدخول */
+.login{
+  width:100%;
+  height:56px;
+  border:0;
+  border-radius:14px;
+  background:
+    linear-gradient(
+      110deg,
+      #9d7122,
+      #f0cb70,
+      #b68429,
+      #f0cb70
+    );
+  background-size:300% 100%;
+  color:#17130a;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  animation:goldMove 5s linear infinite;
+  transition:.25s;
+}
+@keyframes goldMove{
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
+}
+.login:active{
+  transform:scale(.97);
+}
+.forgot{
+  display:block;
+  text-align:center;
+  color:#d9b35d;
+  font-size:13px;
+  margin-top:13px;
   cursor:pointer;
 }
-/* شاشات صغيرة */
-@media(max-width:400px){
-  .container{
-    padding:20px;
+.error{
+  color:#ff7777;
+  text-align:center;
+  font-size:13px;
+  margin-top:9px;
+  min-height:18px;
+}
+.secure{
+  text-align:center;
+  color:#666;
+  font-size:11px;
+  margin-top:17px;
+}
+/* شاشة التطبيق */
+#app{
+  display:none;
+  width:100%;
+  max-width:900px;
+  min-height:100vh;
+  padding:20px;
+  margin:auto;
+}
+.app-title{
+  color:#e8c473;
+  text-align:center;
+  margin-bottom:20px;
+}
+.box{
+  background:rgba(20,22,27,.9);
+  border:1px solid rgba(224,181,91,.25);
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:18px;
+}
+.box input{
+  width:100%;
+  height:52px;
+  margin:5px 0;
+  padding:0 14px;
+  border-radius:12px;
+  border:1px solid #333;
+  background:#090b0f;
+  color:white;
+}
+.gold-button{
+  width:100%;
+  height:54px;
+  border:0;
+  border-radius:12px;
+  margin-top:8px;
+  background:#d5aa4d;
+  color:#111;
+  font-weight:bold;
+  font-size:16px;
+}
+.item{
+  background:#111419;
+  border:1px solid #303238;
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
+}
+.item img{
+  width:130px;
+  height:130px;
+  object-fit:cover;
+  border-radius:13px;
+  display:block;
+  margin-bottom:10px;
+}
+.logout{
+  display:block;
+  margin:0 auto 20px;
+  padding:10px 20px;
+  border:1px solid #444;
+  background:#15171b;
+  color:white;
+  border-radius:10px;
+}
+/* تحسين إضافي للشاشات الصغيرة */
+@media(max-width:360px){
+  .card{
+    padding:20px 15px;
   }
-  .logo{
-    width:190px;
-    height:190px;
+  .logo-wrap{
+    width:95px;
+    height:95px;
   }
-  h1{
-    font-size:24px;
+  .brand{
+    font-size:18px;
+  }
+  .welcome{
+    font-size:22px;
+  }
+  .country{
+    width:105px;
   }
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <!-- الصورة -->
-  <img src="logo.jpg" class="logo" alt="Center Albaziki">
-  <h1>مـرحـبـاً بـك</h1>
-  <div class="subtitle">
-    سجل دخولك لإدارة المخزون
-  </div>
-  <div class="login-buttons">
-    <button class="login-btn" onclick="googleLogin()">
-      <span class="google">G</span>
-      تسجيل الدخول بحساب Google
+<div class="page">
+  <div class="glow"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <!-- تسجيل الدخول -->
+  <div class="card" id="loginPage">
+    <div class="logo-wrap">
+      <img
+        src="logo.jpg"
+        class="logo"
+        alt="Center Albaziki">
+    </div>
+    <div class="brand">
+      CENTER ALBAZIKI
+    </div>
+    <div class="subtitle">
+      إدارة المخزون باحترافية
+    </div>
+    <div class="welcome">
+      مرحباً بك
+    </div>
+    <button class="social google" onclick="googleLogin()">
+      <span class="google-icon">G</span>
+      تسجيل الدخول باستخدام Google
     </button>
-    <button class="login-btn" onclick="appleLogin()">
-      <span class="apple">●</span>
-      تسجيل الدخول بحساب Apple
+    <button class="social apple" onclick="appleLogin()">
+      <span class="apple-icon"></span>
+      تسجيل الدخول باستخدام Apple
     </button>
-    <div class="or">
+    <div class="divider">
       <span>أو</span>
     </div>
-    <input
-      id="phone"
-      class="input"
-      type="text"
-      placeholder="رقم الهاتف"
-    >
+    <div class="phone-row">
+      <select id="country" class="country">
+        <option value="+963">🇸🇾 +963</option>
+        <option value="+966">🇸🇦 +966</option>
+        <option value="+971">🇦🇪 +971</option>
+        <option value="+974">🇶🇦 +974</option>
+        <option value="+965">🇰🇼 +965</option>
+        <option value="+973">🇧🇭 +973</option>
+        <option value="+968">🇴🇲 +968</option>
+        <option value="+962">🇯🇴 +962</option>
+        <option value="+961">🇱🇧 +961</option>
+        <option value="+90">🇹🇷 +90</option>
+        <option value="+49">🇩🇪 +49</option>
+        <option value="+33">🇫🇷 +33</option>
+        <option value="+44">🇬🇧 +44</option>
+        <option value="+39">🇮🇹 +39</option>
+        <option value="+34">🇪🇸 +34</option>
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+1">🇨🇦 +1</option>
+        <option value="+61">🇦🇺 +61</option>
+        <option value="+81">🇯🇵 +81</option>
+        <option value="+82">🇰🇷 +82</option>
+        <option value="+86">🇨🇳 +86</option>
+      </select>
+      <input
+        id="phone"
+        class="phone"
+        type="tel"
+        inputmode="numeric"
+        placeholder="رقم الهاتف">
+    </div>
     <input
       id="password"
-      class="input"
+      class="password"
       type="password"
-      placeholder="كلمة المرور"
-    >
-    <button class="main-btn" onclick="login()">
+      placeholder="كلمة المرور">
+    <button class="login" onclick="login()">
       تسجيل الدخول
     </button>
+    <div id="error" class="error"></div>
+    <div class="forgot" onclick="forgotPassword()">
+      نسيت كلمة المرور؟
+    </div>
+    <div class="secure">
+      🔒 تسجيل دخول آمن ومشفر
+    </div>
   </div>
-  <div class="bottom">
-    ليس لديك حساب؟
-    <span onclick="register()">سجل الآن</span>
+  <!-- لوحة المخزون -->
+  <div id="app">
+    <h1 class="app-title">
+      👟 مخزون سنتر البازكه
+    </h1>
+    <button class="logout" onclick="logout()">
+      تسجيل الخروج
+    </button>
+    <div class="box">
+      <input
+        id="model"
+        placeholder="رقم الموديل *">
+      <input
+        id="supplier"
+        placeholder="اسم المورد">
+      <input
+        id="color"
+        placeholder="اللون">
+      <input
+        id="qty"
+        type="number"
+        placeholder="عدد الكراتين">
+      <input
+        id="image"
+        type="file"
+        accept="image/*">
+      <button class="gold-button" onclick="addModel()">
+        إضافة موديل
+      </button>
+      <div id="formError" class="error"></div>
+    </div>
+    <div id="list"></div>
   </div>
 </div>
 <script>
+let shoes =
+  JSON.parse(
+    localStorage.getItem("shoes") || "[]"
+  );
 function login(){
-  let phone =
+  const country =
+    document.getElementById("country").value;
+  const phone =
     document.getElementById("phone").value.trim();
-  let password =
+  const password =
     document.getElementById("password").value.trim();
-  if(phone === "" || password === ""){
-    alert("يرجى إدخال رقم الهاتف وكلمة المرور");
+  const error =
+    document.getElementById("error");
+  if(!phone){
+    error.textContent =
+      "يرجى إدخال رقم الهاتف.";
     return;
   }
-  alert("تم تسجيل الدخول");
-  // لاحقاً نربطها بنظام تسجيل دخول حقيقي
+  if(!password){
+    error.textContent =
+      "يرجى إدخال كلمة المرور.";
+    return;
+  }
+  const fullNumber =
+    country + phone;
+  error.textContent =
+    "";
+  /*
+    مؤقتاً:
+    هذا المكان سنربطه بـ Firebase
+    لإرسال رمز SMS الحقيقي.
+  */
+  alert(
+    "رقمك: " + fullNumber +
+    "\nسيتم ربط التحقق الحقيقي عبر SMS في الخطوة التالية."
+  );
 }
 function googleLogin(){
   alert(
-    "تسجيل الدخول بواسطة Google سيتم تفعيله عند ربط Firebase"
+    "Google جاهز للربط الحقيقي عبر Firebase."
   );
 }
 function appleLogin(){
   alert(
-    "تسجيل الدخول بواسطة Apple سيتم تفعيله عند ربط Firebase"
+    "Apple جاهز للربط الحقيقي عبر Firebase."
   );
 }
-function register(){
-  alert("صفحة إنشاء الحساب سيتم إضافتها لاحقاً");
+function forgotPassword(){
+  alert(
+    "استعادة كلمة المرور سيتم ربطها مع نظام الحسابات."
+  );
 }
+function logout(){
+  document.getElementById("app").style.display="none";
+  document.getElementById("loginPage").style.display="block";
+}
+function addModel(){
+  const model =
+    document.getElementById("model").value.trim();
+  const supplier =
+    document.getElementById("supplier").value.trim();
+  const color =
+    document.getElementById("color").value.trim();
+  const qty =
+    document.getElementById("qty").value.trim();
+  const imageInput =
+    document.getElementById("image");
+  const error =
+    document.getElementById("formError");
+  if(!model){
+    error.textContent =
+      "⚠️ لازم تكتب رقم الموديل أولاً.";
+    return;
+  }
+  error.textContent="";
+  const file =
+    imageInput.files[0];
+  if(file){
+    const reader =
+      new FileReader();
+    reader.onload=function(e){
+      saveModel(
+        model,
+        supplier,
+        color,
+        qty,
+        e.target.result
+      );
+    };
+    reader.readAsDataURL(file);
+  }else{
+    saveModel(
+      model,
+      supplier,
+      color,
+      qty,
+      ""
+    );
+  }
+}
+function saveModel(
+  model,
+  supplier,
+  color,
+  qty,
+  image
+){
+  shoes.push({
+    model,
+    supplier,
+    color,
+    qty,
+    image
+  });
+  localStorage.setItem(
+    "shoes",
+    JSON.stringify(shoes)
+  );
+  document.getElementById("model").value="";
+  document.getElementById("supplier").value="";
+  document.getElementById("color").value="";
+  document.getElementById("qty").value="";
+  document.getElementById("image").value="";
+  showModels();
+}
+function showModels(){
+  let html="";
+  shoes.forEach(function(s){
+    html += `
+      <div class="item">
+        ${
+          s.image
+          ?
+          `<img src="${s.image}" alt="صورة الموديل">`
+          :
+          ""
+        }
+        <div>
+          <b>الموديل:</b>
+          ${safe(s.model)}
+        </div>
+        <div>
+          <b>المورد:</b>
+          ${safe(s.supplier)}
+        </div>
+        <div>
+          <b>اللون:</b>
+          ${safe(s.color)}
+        </div>
+        <div>
+          <b>الكراتين:</b>
+          ${safe(s.qty)}
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById("list").innerHTML =
+    html;
+}
+function safe(value){
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+showModels();
 </script>
 </body>
 </html>
