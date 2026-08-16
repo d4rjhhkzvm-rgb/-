@@ -198,3 +198,203 @@ CENTER ALBAZIKI
 
 
 </div>
+</div>
+
+
+<!-- لوحة المخزون -->
+
+<div id="app">
+
+<h1 class="app-title">
+👟 مخزون سنتر البازكي
+</h1>
+
+
+<button class="logout" onclick="logout()">
+تسجيل الخروج
+</button>
+
+
+<div class="box">
+
+<input id="model" placeholder="رقم الموديل">
+
+<input id="supplier" placeholder="اسم المورد">
+
+<input id="color" placeholder="اللون">
+
+<input id="qty" type="number" placeholder="عدد الكراتين">
+
+
+<button class="add" onclick="addModel()">
+إضافة موديل
+</button>
+
+
+</div>
+
+
+<div id="list"></div>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+let shoes =
+JSON.parse(localStorage.getItem("shoes") || "[]");
+
+
+// تسجيل Google (سيتم ربط Firebase هنا)
+
+function googleLogin(){
+
+document.getElementById("loginPage").style.display="none";
+
+document.getElementById("app").style.display="block";
+
+showModels();
+
+}
+
+
+// تسجيل خروج
+
+function logout(){
+
+document.getElementById("app").style.display="none";
+
+document.getElementById("loginPage").style.display="block";
+
+}
+
+
+
+// إضافة موديل
+
+function addModel(){
+
+let model =
+document.getElementById("model").value;
+
+let supplier =
+document.getElementById("supplier").value;
+
+let color =
+document.getElementById("color").value;
+
+let qty =
+document.getElementById("qty").value;
+
+
+if(!model){
+
+alert("اكتب رقم الموديل");
+
+return;
+
+}
+
+
+shoes.push({
+
+model,
+supplier,
+color,
+qty
+
+});
+
+
+localStorage.setItem(
+"shoes",
+JSON.stringify(shoes)
+);
+
+
+showModels();
+
+
+document.getElementById("model").value="";
+document.getElementById("supplier").value="";
+document.getElementById("color").value="";
+document.getElementById("qty").value="";
+
+
+}
+
+
+
+// عرض المخزون
+
+function showModels(){
+
+let html="";
+
+
+shoes.forEach(function(s){
+
+html += `
+
+<div class="item">
+
+<b>الموديل:</b> ${s.model}<br>
+
+<b>المورد:</b> ${s.supplier}<br>
+
+<b>اللون:</b> ${s.color}<br>
+
+<b>الكراتين:</b> ${s.qty}
+
+</div>
+
+`;
+
+});
+
+
+document.getElementById("list").innerHTML=html;
+
+
+}
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBPiLbUPClwrvbvzmvEaaIu2FaAWWsA4TI",
+  authDomain: "centeralbaziki.firebaseapp.com",
+  projectId: "centeralbaziki",
+  storageBucket: "centeralbaziki.firebasestorage.app",
+  messagingSenderId: "368079353950",
+  appId: "1:368079353950:web:adb51c325e4208aba59ccf",
+  measurementId: "G-C5FG364ZDR"
+};
+
+const appFirebase = initializeApp(firebaseConfig);
+const auth = getAuth(appFirebase);
+const provider = new GoogleAuthProvider();
+
+window.googleLogin = function(){
+
+  signInWithPopup(auth, provider)
+  .then((result)=>{
+    const user = result.user;
+
+    alert("تم تسجيل الدخول: " + user.email);
+
+    document.getElementById("loginPage").style.display="none";
+    document.getElementById("app").style.display="block";
+
+  })
+  .catch((error)=>{
+    alert("خطأ: " + error.message);
+  });
+
+}
+</script>
