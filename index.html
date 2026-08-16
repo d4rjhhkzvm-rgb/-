@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مخزون سنتر البازكه</title>
+
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:#f3f3f3;
+  margin:0;
+  padding:20px;
+}
+
+h1{
+  text-align:center;
+}
+
+.box{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:15px;
+}
+
+input,button{
+  width:100%;
+  padding:12px;
+  margin:5px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:16px;
+  box-sizing:border-box;
+}
+
+button{
+  background:#111827;
+  color:white;
+  border:0;
+}
+
+.item{
+  background:white;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>👟 مخزون سنتر البازكه</h1>
+
+<div class="box">
+  <input id="model" placeholder="رقم الموديل">
+  <input id="supplier" placeholder="اسم المورد">
+  <input id="color" placeholder="اللون">
+  <input id="qty" type="number" placeholder="عدد الكراتين">
+
+  <button onclick="add()">إضافة موديل</button>
+</div>
+
+<div id="list"></div>
+
+<script>
+let shoes = JSON.parse(localStorage.getItem("shoes") || "[]");
+
+function add(){
+  let shoe = {
+    model: document.getElementById("model").value,
+    supplier: document.getElementById("supplier").value,
+    color: document.getElementById("color").value,
+    qty: document.getElementById("qty").value
+  };
+
+  shoes.push(shoe);
+  localStorage.setItem("shoes", JSON.stringify(shoes));
+
+  document.getElementById("model").value = "";
+  document.getElementById("supplier").value = "";
+  document.getElementById("color").value = "";
+  document.getElementById("qty").value = "";
+
+  show();
+}
+
+function show(){
+  let html = "";
+
+  shoes.forEach(s => {
+    html += `
+      <div class="item">
+        <b>الموديل:</b> ${s.model}<br>
+        <b>المورد:</b> ${s.supplier}<br>
+        <b>اللون:</b> ${s.color}<br>
+        <b>الكراتين:</b> ${s.qty}
+      </div>
+    `;
+  });
+
+  document.getElementById("list").innerHTML = html;
+}
+
+show();
+</script>
+
+</body>
+</html>
