@@ -6,104 +6,515 @@
 <title>مخزون سنتر البازكه</title>
 
 <style>
+*{box-sizing:border-box}
+
 body{
-  font-family:Arial,sans-serif;
-  background:#f3f3f3;
   margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#050505,#171717);
+  color:white;
+  min-height:100vh;
+}
+
+.login{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   padding:20px;
 }
 
-h1{
+.login-box{
+  width:100%;
+  max-width:430px;
+  padding:35px 25px;
+  border-radius:25px;
+  background:rgba(25,25,25,.9);
+  border:1px solid rgba(212,175,55,.35);
+  box-shadow:0 0 45px rgba(212,175,55,.12);
   text-align:center;
 }
 
-.box{
-  background:white;
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:15px;
+.logo{
+  font-size:55px;
+  margin-bottom:10px;
 }
 
-input,button{
-  width:100%;
-  padding:12px;
+.login-box h1{
   margin:5px 0;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:16px;
-  box-sizing:border-box;
+  color:#d4af37;
 }
 
-button{
-  background:#111827;
-  color:white;
+.subtitle{
+  color:#aaa;
+  margin-bottom:30px;
+}
+
+.login-btn{
+  width:100%;
+  padding:15px;
+  margin:8px 0;
   border:0;
+  border-radius:12px;
+  font-size:16px;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.login-btn:hover{
+  transform:translateY(-2px);
+}
+
+.google{
+  background:white;
+  color:#222;
+}
+
+.apple{
+  background:#000;
+  color:white;
+  border:1px solid #555;
+}
+
+.divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:20px 0;
+  color:#777;
+}
+
+.divider::before,
+.divider::after{
+  content:"";
+  height:1px;
+  background:#444;
+  flex:1;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin:6px 0;
+  border-radius:10px;
+  border:1px solid #444;
+  background:#111;
+  color:white;
+  font-size:16px;
+}
+
+.gold-btn{
+  width:100%;
+  padding:15px;
+  margin-top:10px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#b8860b,#f5d76e,#b8860b);
+  color:#111;
+  font-weight:bold;
+  font-size:17px;
+  cursor:pointer;
+}
+
+#app{
+  display:none;
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  color:#d4af37;
+}
+
+.box{
+  background:#181818;
+  padding:20px;
+  border-radius:18px;
+  border:1px solid #333;
+  margin-bottom:20px;
 }
 
 .item{
-  background:white;
-  padding:12px;
-  margin:10px 0;
+  background:#181818;
+  padding:15px;
+  margin:12px 0;
+  border-radius:15px;
+  border:1px solid #333;
+}
+
+.item img{
+  width:100%;
+  max-width:180px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+
+.error{
+  color:#ff7070;
+  margin-top:10px;
+}
+
+.logout{
+  background:#333;
+  color:white;
+  padding:10px 15px;
+  border:0;
   border-radius:10px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<h1>👟 مخزون سنتر البازكه</h1>
+<!-- تسجيل الدخول -->
+<section id="loginPage" class="login">
 
-<div class="box">
-  <input id="model" placeholder="رقم الموديل">
-  <input id="supplier" placeholder="اسم المورد">
-  <input id="color" placeholder="اللون">
-  <input id="qty" type="number" placeholder="عدد الكراتين">
+  <div class="login-box">
 
-  <button onclick="add()">إضافة موديل</button>
-</div>
+    <div class="logo">👑</div>
 
-<div id="list"></div>
+    <h1>CENTER ALBAZIKI</h1>
 
-<script>
-let shoes = JSON.parse(localStorage.getItem("shoes") || "[]");
+    <div class="subtitle">
+      إدارة المخزون باحترافية
+    </div>
 
-function add(){
-  let shoe = {
-    model: document.getElementById("model").value,
-    supplier: document.getElementById("supplier").value,
-    color: document.getElementById("color").value,
-    qty: document.getElementById("qty").value
-  };
+    <button class="login-btn google" onclick="loginGoogle()">
+      🔵 تسجيل الدخول باستخدام Google
+    </button>
 
-  shoes.push(shoe);
-  localStorage.setItem("shoes", JSON.stringify(shoes));
+    <button class="login-btn apple" onclick="loginApple()">
+       تسجيل الدخول باستخدام Apple
+    </button>
 
-  document.getElementById("model").value = "";
-  document.getElementById("supplier").value = "";
-  document.getElementById("color").value = "";
-  document.getElementById("qty").value = "";
+    <div class="divider">أو</div>
 
-  show();
-}
+    <input id="email" type="email" placeholder="البريد الإلكتروني">
 
-function show(){
-  let html = "";
+    <input id="password" type="password" placeholder="كلمة المرور">
 
-  shoes.forEach(s => {
-    html += `
-      <div class="item">
-        <b>الموديل:</b> ${s.model}<br>
-        <b>المورد:</b> ${s.supplier}<br>
-        <b>اللون:</b> ${s.color}<br>
-        <b>الكراتين:</b> ${s.qty}
-      </div>
-    `;
+    <button class="gold-btn" onclick="loginEmail()">
+      تسجيل الدخول
+    </button>
+
+    <div id="loginError" class="error"></div>
+
+  </div>
+
+</section>
+
+
+<!-- التطبيق -->
+<section id="app">
+
+  <div class="header">
+
+    <h1>👟 مخزون سنتر البازكه</h1>
+
+    <button class="logout" onclick="logout()">
+      تسجيل الخروج
+    </button>
+
+  </div>
+
+
+  <div class="box">
+
+    <input id="model" placeholder="رقم الموديل *">
+
+    <input id="supplier" placeholder="اسم المورد">
+
+    <input id="color" placeholder="اللون">
+
+    <input id="qty" type="number" placeholder="عدد الكراتين">
+
+    <input id="image" type="file" accept="image/*">
+
+    <button class="gold-btn" onclick="add()">
+      إضافة موديل
+    </button>
+
+    <div id="formError" class="error"></div>
+
+  </div>
+
+
+  <div id="list"></div>
+
+</section>
+
+
+<script type="module">
+
+/*
+  ==========================================
+  إعداد Firebase
+  ==========================================
+
+  بعد إنشاء مشروع Firebase سنضع بيانات
+  مشروعك هنا.
+*/
+
+const firebaseConfig = {
+  apiKey: "ضع_API_KEY_هنا",
+  authDomain: "ضع_AUTH_DOMAIN_هنا",
+  projectId: "ضع_PROJECT_ID_هنا",
+  storageBucket: "ضع_STORAGE_BUCKET_هنا",
+  messagingSenderId: "ضع_MESSAGING_SENDER_ID_هنا",
+  appId: "ضع_APP_ID_هنا"
+};
+
+
+// حالياً الموقع يعمل بوضع تجريبي.
+// بعد إعداد Firebase سنفعّل تسجيل الدخول الحقيقي.
+
+
+let shoes = JSON.parse(
+  localStorage.getItem("shoes") || "[]"
+);
+
+
+window.loginGoogle = function(){
+
+  alert(
+    "تسجيل Google سيعمل بعد ربط الموقع بـ Firebase."
+  );
+
+};
+
+
+window.loginApple = function(){
+
+  alert(
+    "تسجيل Apple سيعمل بعد إعداد Firebase وApple."
+  );
+
+};
+
+
+window.loginEmail = function(){
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value.trim();
+
+  const error =
+    document.getElementById("loginError");
+
+  if(!email || !password){
+
+    error.textContent =
+      "يرجى إدخال البريد الإلكتروني وكلمة المرور.";
+
+    return;
+  }
+
+  error.textContent =
+    "تسجيل الدخول بالبريد سيتم تفعيله مع Firebase.";
+
+};
+
+
+window.logout = function(){
+
+  document.getElementById("app").style.display = "none";
+
+  document.getElementById("loginPage").style.display = "flex";
+
+};
+
+
+window.add = function(){
+
+  const model =
+    document.getElementById("model").value.trim();
+
+  const supplier =
+    document.getElementById("supplier").value.trim();
+
+  const color =
+    document.getElementById("color").value.trim();
+
+  const qty =
+    document.getElementById("qty").value.trim();
+
+  const imageInput =
+    document.getElementById("image");
+
+  const error =
+    document.getElementById("formError");
+
+
+  /*
+    منع إضافة موديل بدون رقم
+  */
+
+  if(!model){
+
+    error.textContent =
+      "⚠️ يجب إدخال رقم الموديل قبل الإضافة.";
+
+    return;
+  }
+
+
+  error.textContent = "";
+
+
+  const file =
+    imageInput.files[0];
+
+
+  if(file){
+
+    const reader =
+      new FileReader();
+
+    reader.onload = function(e){
+
+      saveShoe(
+        model,
+        supplier,
+        color,
+        qty,
+        e.target.result
+      );
+
+    };
+
+    reader.readAsDataURL(file);
+
+  }else{
+
+    saveShoe(
+      model,
+      supplier,
+      color,
+      qty,
+      ""
+    );
+
+  }
+
+};
+
+
+function saveShoe(
+  model,
+  supplier,
+  color,
+  qty,
+  image
+){
+
+  shoes.push({
+
+    model,
+    supplier,
+    color,
+    qty,
+    image
+
   });
 
-  document.getElementById("list").innerHTML = html;
+
+  localStorage.setItem(
+    "shoes",
+    JSON.stringify(shoes)
+  );
+
+
+  document.getElementById("model").value = "";
+
+  document.getElementById("supplier").value = "";
+
+  document.getElementById("color").value = "";
+
+  document.getElementById("qty").value = "";
+
+  document.getElementById("image").value = "";
+
+
+  show();
+
 }
 
+
+function show(){
+
+  let html = "";
+
+
+  shoes.forEach(s => {
+
+    html += `
+
+      <div class="item">
+
+        ${
+          s.image
+          ?
+          `<img src="${s.image}" alt="صورة الموديل">`
+          :
+          ""
+        }
+
+        <div>
+          <b>الموديل:</b>
+          ${escapeHTML(s.model)}
+        </div>
+
+        <div>
+          <b>المورد:</b>
+          ${escapeHTML(s.supplier)}
+        </div>
+
+        <div>
+          <b>اللون:</b>
+          ${escapeHTML(s.color)}
+        </div>
+
+        <div>
+          <b>الكراتين:</b>
+          ${escapeHTML(s.qty)}
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  document.getElementById("list").innerHTML =
+    html;
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
 show();
+
 </script>
 
 </body>
