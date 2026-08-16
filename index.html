@@ -1,521 +1,342 @@
+واجهة تسجيل الدخول — Center Albaziki
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مخزون سنتر البازكه</title>
-
+<title>Center Albaziki</title>
 <style>
-*{box-sizing:border-box}
-
-body{
+*{
+  box-sizing:border-box;
   margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#050505,#171717);
-  color:white;
-  min-height:100vh;
+  padding:0;
 }
-
-.login{
+body{
+  font-family:Arial, sans-serif;
   min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 20%, #27303d 0%, #111722 35%, #080b11 75%);
+  color:white;
   display:flex;
   justify-content:center;
   align-items:center;
-  padding:20px;
+  overflow:hidden;
 }
-
-.login-box{
+/* إضاءة متحركة بالخلفية */
+body::before{
+  content:"";
+  position:fixed;
+  width:500px;
+  height:500px;
+  border-radius:50%;
+  background:rgba(212,160,65,.12);
+  filter:blur(100px);
+  top:-180px;
+  left:50%;
+  transform:translateX(-50%);
+  animation:lightMove 5s ease-in-out infinite alternate;
+}
+@keyframes lightMove{
+  from{
+    transform:translateX(-50%) scale(.8);
+    opacity:.5;
+  }
+  to{
+    transform:translateX(-50%) scale(1.3);
+    opacity:1;
+  }
+}
+.container{
   width:100%;
-  max-width:430px;
-  padding:35px 25px;
-  border-radius:25px;
-  background:rgba(25,25,25,.9);
-  border:1px solid rgba(212,175,55,.35);
-  box-shadow:0 0 45px rgba(212,175,55,.12);
-  text-align:center;
+  max-width:500px;
+  min-height:100vh;
+  padding:30px 25px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  z-index:2;
 }
-
+/* الشعار */
 .logo{
-  font-size:55px;
-  margin-bottom:10px;
+  width:240px;
+  height:240px;
+  object-fit:cover;
+  border-radius:20px;
+  filter:
+    drop-shadow(0 0 15px rgba(231,181,76,.35))
+    drop-shadow(0 0 40px rgba(231,181,76,.15));
+  animation:
+    logoEnter 1.3s ease,
+    logoFloat 4s ease-in-out infinite;
 }
-
-.login-box h1{
-  margin:5px 0;
-  color:#d4af37;
+@keyframes logoEnter{
+  from{
+    opacity:0;
+    transform:scale(.7) translateY(-40px);
+  }
+  to{
+    opacity:1;
+    transform:scale(1) translateY(0);
+  }
 }
-
+@keyframes logoFloat{
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-8px);
+  }
+}
+h1{
+  margin-top:18px;
+  font-size:28px;
+  color:#e8bd68;
+  text-shadow:0 0 15px rgba(232,189,104,.35);
+  animation:fadeUp 1s ease .3s both;
+}
 .subtitle{
-  color:#aaa;
-  margin-bottom:30px;
+  margin-top:8px;
+  color:#ddd;
+  font-size:16px;
+  animation:fadeUp 1s ease .5s both;
 }
-
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+/* الأزرار */
+.login-buttons{
+  width:100%;
+  margin-top:30px;
+}
 .login-btn{
   width:100%;
-  padding:15px;
-  margin:8px 0;
-  border:0;
-  border-radius:12px;
-  font-size:16px;
-  cursor:pointer;
-  transition:.25s;
-}
-
-.login-btn:hover{
-  transform:translateY(-2px);
-}
-
-.google{
-  background:white;
-  color:#222;
-}
-
-.apple{
-  background:#000;
+  height:65px;
+  margin-bottom:16px;
+  border-radius:15px;
+  border:1px solid rgba(224,179,90,.55);
+  background:rgba(20,23,31,.75);
   color:white;
-  border:1px solid #555;
-}
-
-.divider{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin:20px 0;
-  color:#777;
-}
-
-.divider::before,
-.divider::after{
-  content:"";
-  height:1px;
-  background:#444;
-  flex:1;
-}
-
-input{
-  width:100%;
-  padding:14px;
-  margin:6px 0;
-  border-radius:10px;
-  border:1px solid #444;
-  background:#111;
-  color:white;
-  font-size:16px;
-}
-
-.gold-btn{
-  width:100%;
-  padding:15px;
-  margin-top:10px;
-  border:0;
-  border-radius:12px;
-  background:linear-gradient(135deg,#b8860b,#f5d76e,#b8860b);
-  color:#111;
-  font-weight:bold;
   font-size:17px;
   cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+  transition:.3s;
+  backdrop-filter:blur(10px);
+  animation:slideUp .8s ease both;
 }
-
-#app{
-  display:none;
-  padding:20px;
-  max-width:900px;
-  margin:auto;
+.login-btn:nth-child(1){
+  animation-delay:.7s;
 }
-
-.header{
-  text-align:center;
-  margin-bottom:20px;
+.login-btn:nth-child(2){
+  animation-delay:.9s;
 }
-
-.header h1{
-  color:#d4af37;
+.login-btn:hover{
+  transform:translateY(-4px) scale(1.01);
+  border-color:#e7bd63;
+  box-shadow:0 8px 30px rgba(218,170,75,.18);
 }
-
-.box{
-  background:#181818;
-  padding:20px;
-  border-radius:18px;
-  border:1px solid #333;
-  margin-bottom:20px;
+.login-btn:active{
+  transform:scale(.97);
 }
-
-.item{
-  background:#181818;
-  padding:15px;
-  margin:12px 0;
-  border-radius:15px;
-  border:1px solid #333;
+.google{
+  font-size:25px;
+  font-weight:bold;
+  color:#4285F4;
 }
-
-.item img{
-  width:100%;
-  max-width:180px;
-  border-radius:12px;
-  margin-bottom:10px;
-}
-
-.error{
-  color:#ff7070;
-  margin-top:10px;
-}
-
-.logout{
-  background:#333;
+.apple{
+  font-size:28px;
   color:white;
-  padding:10px 15px;
+}
+@keyframes slideUp{
+  from{
+    opacity:0;
+    transform:translateY(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+/* أو */
+.or{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin:8px 0 20px;
+  color:#aaa;
+}
+.or::before,
+.or::after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #8d6b32,
+    transparent
+  );
+}
+/* الحقول */
+.input{
+  width:100%;
+  height:60px;
+  margin-bottom:13px;
+  padding:0 20px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(15,18,25,.75);
+  color:white;
+  font-size:16px;
+  outline:none;
+  transition:.3s;
+}
+.input:focus{
+  border-color:#e5b95e;
+  box-shadow:0 0 20px rgba(229,185,94,.12);
+}
+.input::placeholder{
+  color:#888;
+}
+/* زر الدخول */
+.main-btn{
+  width:100%;
+  height:65px;
+  margin-top:5px;
   border:0;
-  border-radius:10px;
+  border-radius:15px;
+  background:linear-gradient(
+    135deg,
+    #e9bf68,
+    #b77d28
+  );
+  color:white;
+  font-size:20px;
+  font-weight:bold;
   cursor:pointer;
+  box-shadow:0 8px 30px rgba(210,157,55,.25);
+  transition:.3s;
+  animation:pulse 3s ease-in-out infinite;
+}
+.main-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(210,157,55,.4);
+}
+.main-btn:active{
+  transform:scale(.97);
+}
+@keyframes pulse{
+  0%,100%{
+    box-shadow:0 8px 30px rgba(210,157,55,.2);
+  }
+  50%{
+    box-shadow:0 8px 45px rgba(210,157,55,.4);
+  }
+}
+.bottom{
+  margin-top:25px;
+  color:#aaa;
+  font-size:14px;
+}
+.bottom span{
+  color:#e7b85c;
+  cursor:pointer;
+}
+/* شاشات صغيرة */
+@media(max-width:400px){
+  .container{
+    padding:20px;
+  }
+  .logo{
+    width:190px;
+    height:190px;
+  }
+  h1{
+    font-size:24px;
+  }
 }
 </style>
 </head>
-
 <body>
-
-<!-- تسجيل الدخول -->
-<section id="loginPage" class="login">
-
-  <div class="login-box">
-
-    <div class="logo">👑</div>
-
-    <h1>CENTER ALBAZIKI</h1>
-
-    <div class="subtitle">
-      إدارة المخزون باحترافية
+<div class="container">
+  <!-- الصورة -->
+  <img src="logo.jpg" class="logo" alt="Center Albaziki">
+  <h1>مـرحـبـاً بـك</h1>
+  <div class="subtitle">
+    سجل دخولك لإدارة المخزون
+  </div>
+  <div class="login-buttons">
+    <button class="login-btn" onclick="googleLogin()">
+      <span class="google">G</span>
+      تسجيل الدخول بحساب Google
+    </button>
+    <button class="login-btn" onclick="appleLogin()">
+      <span class="apple">●</span>
+      تسجيل الدخول بحساب Apple
+    </button>
+    <div class="or">
+      <span>أو</span>
     </div>
-
-    <button class="login-btn google" onclick="loginGoogle()">
-      🔵 تسجيل الدخول باستخدام Google
-    </button>
-
-    <button class="login-btn apple" onclick="loginApple()">
-       تسجيل الدخول باستخدام Apple
-    </button>
-
-    <div class="divider">أو</div>
-
-    <input id="email" type="email" placeholder="البريد الإلكتروني">
-
-    <input id="password" type="password" placeholder="كلمة المرور">
-
-    <button class="gold-btn" onclick="loginEmail()">
+    <input
+      id="phone"
+      class="input"
+      type="text"
+      placeholder="رقم الهاتف"
+    >
+    <input
+      id="password"
+      class="input"
+      type="password"
+      placeholder="كلمة المرور"
+    >
+    <button class="main-btn" onclick="login()">
       تسجيل الدخول
     </button>
-
-    <div id="loginError" class="error"></div>
-
   </div>
-
-</section>
-
-
-<!-- التطبيق -->
-<section id="app">
-
-  <div class="header">
-
-    <h1>👟 مخزون سنتر البازكه</h1>
-
-    <button class="logout" onclick="logout()">
-      تسجيل الخروج
-    </button>
-
+  <div class="bottom">
+    ليس لديك حساب؟
+    <span onclick="register()">سجل الآن</span>
   </div>
-
-
-  <div class="box">
-
-    <input id="model" placeholder="رقم الموديل *">
-
-    <input id="supplier" placeholder="اسم المورد">
-
-    <input id="color" placeholder="اللون">
-
-    <input id="qty" type="number" placeholder="عدد الكراتين">
-
-    <input id="image" type="file" accept="image/*">
-
-    <button class="gold-btn" onclick="add()">
-      إضافة موديل
-    </button>
-
-    <div id="formError" class="error"></div>
-
-  </div>
-
-
-  <div id="list"></div>
-
-</section>
-
-
-<script type="module">
-
-/*
-  ==========================================
-  إعداد Firebase
-  ==========================================
-
-  بعد إنشاء مشروع Firebase سنضع بيانات
-  مشروعك هنا.
-*/
-
-const firebaseConfig = {
-  apiKey: "ضع_API_KEY_هنا",
-  authDomain: "ضع_AUTH_DOMAIN_هنا",
-  projectId: "ضع_PROJECT_ID_هنا",
-  storageBucket: "ضع_STORAGE_BUCKET_هنا",
-  messagingSenderId: "ضع_MESSAGING_SENDER_ID_هنا",
-  appId: "ضع_APP_ID_هنا"
-};
-
-
-// حالياً الموقع يعمل بوضع تجريبي.
-// بعد إعداد Firebase سنفعّل تسجيل الدخول الحقيقي.
-
-
-let shoes = JSON.parse(
-  localStorage.getItem("shoes") || "[]"
-);
-
-
-window.loginGoogle = function(){
-
-  alert(
-    "تسجيل Google سيعمل بعد ربط الموقع بـ Firebase."
-  );
-
-};
-
-
-window.loginApple = function(){
-
-  alert(
-    "تسجيل Apple سيعمل بعد إعداد Firebase وApple."
-  );
-
-};
-
-
-window.loginEmail = function(){
-
-  const email =
-    document.getElementById("email").value.trim();
-
-  const password =
+</div>
+<script>
+function login(){
+  let phone =
+    document.getElementById("phone").value.trim();
+  let password =
     document.getElementById("password").value.trim();
-
-  const error =
-    document.getElementById("loginError");
-
-  if(!email || !password){
-
-    error.textContent =
-      "يرجى إدخال البريد الإلكتروني وكلمة المرور.";
-
+  if(phone === "" || password === ""){
+    alert("يرجى إدخال رقم الهاتف وكلمة المرور");
     return;
   }
-
-  error.textContent =
-    "تسجيل الدخول بالبريد سيتم تفعيله مع Firebase.";
-
-};
-
-
-window.logout = function(){
-
-  document.getElementById("app").style.display = "none";
-
-  document.getElementById("loginPage").style.display = "flex";
-
-};
-
-
-window.add = function(){
-
-  const model =
-    document.getElementById("model").value.trim();
-
-  const supplier =
-    document.getElementById("supplier").value.trim();
-
-  const color =
-    document.getElementById("color").value.trim();
-
-  const qty =
-    document.getElementById("qty").value.trim();
-
-  const imageInput =
-    document.getElementById("image");
-
-  const error =
-    document.getElementById("formError");
-
-
-  /*
-    منع إضافة موديل بدون رقم
-  */
-
-  if(!model){
-
-    error.textContent =
-      "⚠️ يجب إدخال رقم الموديل قبل الإضافة.";
-
-    return;
-  }
-
-
-  error.textContent = "";
-
-
-  const file =
-    imageInput.files[0];
-
-
-  if(file){
-
-    const reader =
-      new FileReader();
-
-    reader.onload = function(e){
-
-      saveShoe(
-        model,
-        supplier,
-        color,
-        qty,
-        e.target.result
-      );
-
-    };
-
-    reader.readAsDataURL(file);
-
-  }else{
-
-    saveShoe(
-      model,
-      supplier,
-      color,
-      qty,
-      ""
-    );
-
-  }
-
-};
-
-
-function saveShoe(
-  model,
-  supplier,
-  color,
-  qty,
-  image
-){
-
-  shoes.push({
-
-    model,
-    supplier,
-    color,
-    qty,
-    image
-
-  });
-
-
-  localStorage.setItem(
-    "shoes",
-    JSON.stringify(shoes)
+  alert("تم تسجيل الدخول");
+  // لاحقاً نربطها بنظام تسجيل دخول حقيقي
+}
+function googleLogin(){
+  alert(
+    "تسجيل الدخول بواسطة Google سيتم تفعيله عند ربط Firebase"
   );
-
-
-  document.getElementById("model").value = "";
-
-  document.getElementById("supplier").value = "";
-
-  document.getElementById("color").value = "";
-
-  document.getElementById("qty").value = "";
-
-  document.getElementById("image").value = "";
-
-
-  show();
-
 }
-
-
-function show(){
-
-  let html = "";
-
-
-  shoes.forEach(s => {
-
-    html += `
-
-      <div class="item">
-
-        ${
-          s.image
-          ?
-          `<img src="${s.image}" alt="صورة الموديل">`
-          :
-          ""
-        }
-
-        <div>
-          <b>الموديل:</b>
-          ${escapeHTML(s.model)}
-        </div>
-
-        <div>
-          <b>المورد:</b>
-          ${escapeHTML(s.supplier)}
-        </div>
-
-        <div>
-          <b>اللون:</b>
-          ${escapeHTML(s.color)}
-        </div>
-
-        <div>
-          <b>الكراتين:</b>
-          ${escapeHTML(s.qty)}
-        </div>
-
-      </div>
-
-    `;
-
-  });
-
-
-  document.getElementById("list").innerHTML =
-    html;
-
+function appleLogin(){
+  alert(
+    "تسجيل الدخول بواسطة Apple سيتم تفعيله عند ربط Firebase"
+  );
 }
-
-
-function escapeHTML(value){
-
-  return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
+function register(){
+  alert("صفحة إنشاء الحساب سيتم إضافتها لاحقاً");
 }
-
-
-show();
-
 </script>
-
 </body>
 </html>
