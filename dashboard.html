@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>CENTER ALBAZIKI - Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+.dashboard{
+    padding:20px;
+}
+
+.logo{
+    text-align:center;
+    color:#d4af37;
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+.user{
+    background:#1d1d1d;
+    padding:15px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:#1c1c1c;
+    border:1px solid #d4af37;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+}
+
+.card h2{
+    color:#d4af37;
+}
+
+.menu{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+}
+
+.menu button{
+    background:#d4af37;
+    color:#111;
+    border:none;
+    padding:18px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.search{
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:none;
+    margin-bottom:20px;
+    font-size:16px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<div class="logo">
+CENTER ALBAZIKI
+</div>
+
+
+<div class="user">
+<h3>مرحباً بك 👋</h3>
+<p id="username">المستخدم</p>
+</div>
+
+
+<input class="search" 
+placeholder="🔍 بحث عن موديل أو مورد أو لون">
+
+
+<div class="cards">
+
+<div class="card">
+<h2>📦</h2>
+<p>عدد الموديلات</p>
+<h3>0</h3>
+</div>
+
+
+<div class="card">
+<h2>📦</h2>
+<p>عدد الكراتين</p>
+<h3>0</h3>
+</div>
+
+
+<div class="card">
+<h2>💰</h2>
+<p>رأس المال</p>
+<h3>$0</h3>
+</div>
+
+
+<div class="card">
+<h2>⚠️</h2>
+<p>تنبيهات المخزون</p>
+<h3>0</h3>
+</div>
+
+</div>
+
+
+
+<div class="menu">
+
+<button>📦 المنتجات</button>
+
+<button>💰 المبيعات</button>
+
+<button>🚚 الموردين</button>
+
+<button>👥 العملاء</button>
+
+<button>📊 التقارير</button>
+
+<button>⚙️ الإعدادات</button>
+
+<button>🤖 المساعد الذكي</button>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+let user = localStorage.getItem("userName");
+
+if(user){
+document.getElementById("username").innerHTML=user;
+}
+
+</script>
+
+
+</body>
+</html>
