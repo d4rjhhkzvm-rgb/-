@@ -1,170 +1,249 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CENTER ALBAZIKI - Dashboard</title>
+<title>CENTER ALBAZIKI</title>
 
 <link rel="stylesheet" href="style.css">
 
 <style>
+
 body{
-    background:#111;
-    color:white;
-    font-family:Arial,sans-serif;
+background:#111;
+color:white;
+font-family:Arial;
+margin:0;
 }
 
-.dashboard{
-    padding:20px;
+.container{
+padding:20px;
 }
 
 .logo{
-    text-align:center;
-    color:#d4af37;
-    font-size:30px;
-    font-weight:bold;
-    margin-bottom:30px;
+text-align:center;
+font-size:32px;
+font-weight:bold;
+color:#d4af37;
+margin:20px;
 }
 
-.user{
-    background:#1d1d1d;
-    padding:15px;
-    border-radius:15px;
-    margin-bottom:20px;
+
+.user-box{
+background:#1d1d1d;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
 }
 
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:15px;
-}
-
-.card{
-    background:#1c1c1c;
-    border:1px solid #d4af37;
-    border-radius:15px;
-    padding:20px;
-    text-align:center;
-}
-
-.card h2{
-    color:#d4af37;
-}
-
-.menu{
-    margin-top:30px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:15px;
-}
-
-.menu button{
-    background:#d4af37;
-    color:#111;
-    border:none;
-    padding:18px;
-    border-radius:12px;
-    font-size:18px;
-    font-weight:bold;
-}
 
 .search{
-    width:100%;
-    padding:15px;
-    border-radius:10px;
-    border:none;
-    margin-bottom:20px;
-    font-size:16px;
+width:100%;
+padding:15px;
+border-radius:15px;
+border:none;
+font-size:17px;
+margin-bottom:20px;
 }
+
+
+.cards{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+
+}
+
+
+.card{
+
+background:#1d1d1d;
+border:1px solid #d4af37;
+border-radius:20px;
+padding:20px;
+text-align:center;
+
+}
+
+
+.card span{
+
+font-size:35px;
+
+}
+
+
+.card h2{
+
+color:#d4af37;
+
+}
+
+
+
+.buttons{
+
+margin-top:30px;
+
+display:grid;
+gap:15px;
+
+}
+
+
+
+button{
+
+padding:18px;
+border:none;
+border-radius:15px;
+background:#d4af37;
+font-size:18px;
+font-weight:bold;
+
+}
+
+
+
 </style>
 
 </head>
 
+
 <body>
 
-<div class="dashboard">
+
+<div class="container">
+
 
 <div class="logo">
 CENTER ALBAZIKI
 </div>
 
 
-<div class="user">
-<h3>مرحباً بك 👋</h3>
-<p id="username">المستخدم</p>
+
+<div class="user-box">
+
+<h2>مرحبا 👋</h2>
+
+<p id="username">
+المستخدم
+</p>
+
 </div>
 
 
-<input class="search" 
-placeholder="🔍 بحث عن موديل أو مورد أو لون">
+
+<input class="search" placeholder="🔍 ابحث عن موديل أو لون أو مورد">
+
 
 
 <div class="cards">
 
-<div class="card">
-<h2>📦</h2>
-<p>عدد الموديلات</p>
-<h3>0</h3>
-</div>
-
 
 <div class="card">
-<h2>📦</h2>
-<p>عدد الكراتين</p>
-<h3>0</h3>
+
+<span>📦</span>
+
+<p>الموديلات</p>
+
+<h2 id="models">0</h2>
+
 </div>
 
-
-<div class="card">
-<h2>💰</h2>
-<p>رأس المال</p>
-<h3>$0</h3>
-</div>
 
 
 <div class="card">
-<h2>⚠️</h2>
-<p>تنبيهات المخزون</p>
-<h3>0</h3>
-</div>
+
+<span>🗃️</span>
+
+<p>الكراتين</p>
+
+<h2 id="boxes">0</h2>
 
 </div>
 
 
 
-<div class="menu">
+<div class="card">
 
-<button>📦 المنتجات</button>
+<span>🚚</span>
 
-<button>💰 المبيعات</button>
+<p>الموردين</p>
 
-<button>🚚 الموردين</button>
+<h2 id="suppliers">0</h2>
 
-<button>👥 العملاء</button>
+</div>
 
-<button>📊 التقارير</button>
 
-<button>⚙️ الإعدادات</button>
 
-<button>🤖 المساعد الذكي</button>
+<div class="card">
+
+<span>💰</span>
+
+<p>المبيعات</p>
+
+<h2 id="sales">0</h2>
 
 </div>
 
 
 </div>
+
+
+
+
+<div class="buttons">
+
+
+<button onclick="location.href='products.html'">
+📦 إدارة المنتجات
+</button>
+
+
+<button onclick="location.href='suppliers.html'">
+🚚 الموردين
+</button>
+
+
+<button onclick="location.href='sales.html'">
+💰 تسجيل بيع
+</button>
+
+
+<button onclick="location.href='ai.html'">
+🤖 المساعد الذكي
+</button>
+
+
+
+</div>
+
+
+</div>
+
 
 
 <script>
 
-let user = localStorage.getItem("userName");
 
-if(user){
-document.getElementById("username").innerHTML=user;
+let name = localStorage.getItem("userName");
+
+
+if(name){
+
+document.getElementById("username").innerHTML=name;
+
 }
+
 
 </script>
 
 
 </body>
+
 </html>
