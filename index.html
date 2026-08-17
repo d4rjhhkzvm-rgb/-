@@ -380,7 +380,7 @@ const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
 const provider = new GoogleAuthProvider();
 
-window.googleLogin = function(){
+window.googleLogin = () => {
 
   signInWithPopup(auth, provider)
   .then((result)=>{
