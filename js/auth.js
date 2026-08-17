@@ -1,82 +1,35 @@
-// Google Login
-
 const provider = new firebase.auth.GoogleAuthProvider();
 
+window.loginGoogle = function(){
 
-function loginGoogle(){
+    firebase.auth()
+    .signInWithPopup(provider)
+    .then((result)=>{
 
-firebase.auth()
-.signInWithPopup(provider)
+        const user = result.user;
 
-.then((result)=>{
+        localStorage.setItem("userName", user.displayName);
+        localStorage.setItem("userEmail", user.email);
 
-const user = result.user;
+        window.location.href = "dashboard.html";
 
+    })
+    .catch((error)=>{
 
-localStorage.setItem(
-"userName",
-user.displayName
-);
+        console.log(error);
+        alert(error.message);
 
+    });
 
-localStorage.setItem(
-"userEmail",
-user.email
-);
+};
 
-
-// الذهاب للوحة التحكم
-
-window.location.href="dashboard.html";
-
-
-})
-
-.catch((error)=>{
-
-alert("خطأ في تسجيل الدخول: " + error.message);
-
-});
-
-
-}
-
-
-// حماية لوحة التحكم
 
 firebase.auth().onAuthStateChanged((user)=>{
 
+    if(user){
 
-if(!user){
+        console.log("User:", user.email);
 
-if(window.location.pathname.includes("dashboard")){
-
-window.location.href="index.html";
-
-}
-
-}
-
+    }
 
 });
-
-
-
-// تسجيل الخروج
-
-function logout(){
-
-firebase.auth()
-.signOut()
-.then(()=>{
-
-
-localStorage.clear();
-
-window.location.href="index.html";
-
-
-});
-
-
-}
