@@ -1,39 +1,31 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>إضافة موديل - CENTER ALBAZIKI</title>
-
 <link rel="stylesheet" href="style.css">
-
 <style>
 .product-page {
     max-width: 600px;
-    margin: 0 auto;
+    margin: auto;
     padding: 20px;
 }
-
 .product-title {
     text-align: center;
     color: #d4af37;
     font-size: 28px;
     margin: 20px 0 30px;
 }
-
 .product-form {
     background: #1d1d1d;
     border: 1px solid #d4af37;
     border-radius: 22px;
     padding: 22px;
 }
-
 .form-group {
     margin-bottom: 18px;
 }
-
 .form-group label {
     display: block;
     color: #d4af37;
@@ -41,26 +33,58 @@
     font-weight: bold;
     margin-bottom: 8px;
 }
-
-.form-group input,
-.form-group textarea {
+.form-group input {
     box-sizing: border-box;
     width: 100%;
     display: block;
     padding: 14px;
     border: 1px solid #555;
     border-radius: 12px;
-    background: #fff;
+    background: white;
     color: #111;
     font-size: 17px;
     font-family: Arial;
 }
-
-.form-group textarea {
-    min-height: 110px;
-    resize: vertical;
+.color-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
 }
-
+.color-row select,
+.color-row input {
+    box-sizing: border-box;
+    padding: 14px;
+    border: 1px solid #555;
+    border-radius: 12px;
+    background: white;
+    color: #111;
+    font-size: 16px;
+}
+.color-row select {
+    flex: 1;
+}
+.color-row input {
+    flex: 1;
+}
+.remove-color {
+    width: 48px;
+    border: none;
+    border-radius: 10px;
+    background: #8b0000;
+    color: white;
+    font-size: 22px;
+}
+.add-color {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d4af37;
+    border-radius: 12px;
+    background: transparent;
+    color: #d4af37;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 5px;
+}
 .save-btn {
     width: 100%;
     padding: 16px;
@@ -70,26 +94,22 @@
     color: #111;
     font-size: 19px;
     font-weight: bold;
-    cursor: pointer;
+    margin-top: 20px;
 }
-
-.save-btn:active {
-    transform: scale(0.98);
+#message {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 15px;
 }
 </style>
-
 </head>
-
 <body>
-
 <div class="product-page">
-
     <h1 class="product-title">
         📦 إضافة موديل جديد
     </h1>
-
     <div class="product-form">
-
+        <!-- رقم الموديل -->
         <div class="form-group">
             <label>🔢 رقم الموديل</label>
             <input
@@ -98,16 +118,7 @@
                 placeholder="مثال: 201"
             >
         </div>
-
-        <div class="form-group">
-            <label>🏭 اسم الشركة</label>
-            <input
-                id="company"
-                type="text"
-                placeholder="اسم الشركة"
-            >
-        </div>
-
+        <!-- اسم المورد -->
         <div class="form-group">
             <label>🚚 اسم المورد</label>
             <input
@@ -116,9 +127,70 @@
                 placeholder="اسم المورد"
             >
         </div>
-
+        <!-- عدد الكراتين -->
         <div class="form-group">
-            <label>📦 عدد الأزواج داخل الكرتونة</label>
+            <label>📦 عدد الكراتين</label>
+            <input
+                id="cartons"
+                type="number"
+                min="0"
+                placeholder="مثال: 100"
+            >
+        </div>
+        <!-- الألوان -->
+        <div class="form-group">
+            <label>🎨 الألوان والكميات</label>
+            <div id="colors">
+                <div class="color-row">
+                    <select>
+                        <option value="">
+                            اختر اللون
+                        </option>
+                        <option value="أسود">
+                            أسود
+                        </option>
+                        <option value="بني">
+                            بني
+                        </option>
+                        <option value="عسلي">
+                            عسلي
+                        </option>
+                        <option value="موغا">
+                            موغا
+                        </option>
+                        <option value="أبيض">
+                            أبيض
+                        </option>
+                        <option value="بيج">
+                            بيج
+                        </option>
+                        <option value="كحلي">
+                            كحلي
+                        </option>
+                        <option value="رمادي">
+                            رمادي
+                        </option>
+                    </select>
+                    <input
+                        type="number"
+                        min="0"
+                        placeholder="عدد الكراتين"
+                    >
+                </div>
+            </div>
+            <button
+                type="button"
+                class="add-color"
+                onclick="addColor()"
+            >
+                ➕ إضافة لون آخر
+            </button>
+        </div>
+        <!-- عدد الأزواج -->
+        <div class="form-group">
+            <label>
+                👞 عدد الأزواج داخل الكرتونة
+            </label>
             <input
                 id="pairsPerCarton"
                 type="number"
@@ -126,9 +198,11 @@
                 placeholder="مثال: 8"
             >
         </div>
-
+        <!-- سعر رأس المال -->
         <div class="form-group">
-            <label>💵 سعر رأس المال للزوج بالدولار</label>
+            <label>
+                💵 سعر رأس المال للزوج بالدولار
+            </label>
             <input
                 id="costPerPair"
                 type="number"
@@ -137,15 +211,7 @@
                 placeholder="مثال: 6.50"
             >
         </div>
-
-        <div class="form-group">
-            <label>📝 ملاحظات</label>
-            <textarea
-                id="notes"
-                placeholder="اكتب أي ملاحظات عن الموديل..."
-            ></textarea>
-        </div>
-
+        <!-- زر الحفظ -->
         <button
             id="saveProductBtn"
             class="save-btn"
@@ -153,18 +219,65 @@
         >
             💾 حفظ الموديل
         </button>
-
-        <p id="message" style="text-align:center;"></p>
-
+        <p id="message"></p>
     </div>
-
 </div>
-
+<script>
+function addColor() {
+    const colors =
+        document.getElementById("colors");
+    const row =
+        document.createElement("div");
+    row.className = "color-row";
+    row.innerHTML = `
+        <select>
+            <option value="">
+                اختر اللون
+            </option>
+            <option value="أسود">
+                أسود
+            </option>
+            <option value="بني">
+                بني
+            </option>
+            <option value="عسلي">
+                عسلي
+            </option>
+            <option value="موغا">
+                موغا
+            </option>
+            <option value="أبيض">
+                أبيض
+            </option>
+            <option value="بيج">
+                بيج
+            </option>
+            <option value="كحلي">
+                كحلي
+            </option>
+            <option value="رمادي">
+                رمادي
+            </option>
+        </select>
+        <input
+            type="number"
+            min="0"
+            placeholder="عدد الكراتين"
+        >
+        <button
+            type="button"
+            class="remove-color"
+            onclick="this.parentElement.remove()"
+        >
+            ×
+        </button>
+    `;
+    colors.appendChild(row);
+}
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 <script src="js/firebase-config.js"></script>
 <script src="products.js"></script>
-
 </body>
 </html>
