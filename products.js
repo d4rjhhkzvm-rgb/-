@@ -1,3 +1,6 @@
+const db = firebase.firestore();
+
+
 function saveProduct(){
 
     let model = document.getElementById("model").value;
@@ -27,13 +30,13 @@ function saveProduct(){
 
         alert("تم حفظ الموديل بنجاح");
 
-
         document.getElementById("model").value="";
         document.getElementById("supplier").value="";
         document.getElementById("color").value="";
         document.getElementById("cartons").value="";
 
     })
+
 
     .catch((error)=>{
 
