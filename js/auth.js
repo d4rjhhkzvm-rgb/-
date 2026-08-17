@@ -1,31 +1,23 @@
-import { auth } from "./firebase-config.js";
+// Google Login
 
-import {
-GoogleAuthProvider,
-signInWithPopup,
-onAuthStateChanged,
-signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const provider = new firebase.auth.GoogleAuthProvider();
 
 
-const provider = new GoogleAuthProvider();
+function loginGoogle(){
 
-
-// تسجيل الدخول بجوجل
-window.loginGoogle = function(){
-
-signInWithPopup(auth, provider)
+firebase.auth()
+.signInWithPopup(provider)
 
 .then((result)=>{
 
 const user = result.user;
 
 
-// حفظ بيانات المستخدم
 localStorage.setItem(
 "userName",
 user.displayName
 );
+
 
 localStorage.setItem(
 "userEmail",
@@ -33,52 +25,58 @@ user.email
 );
 
 
-// الانتقال للوحة التحكم
+// الذهاب للوحة التحكم
+
 window.location.href="dashboard.html";
 
 
 })
 
-
 .catch((error)=>{
 
-alert("فشل تسجيل الدخول: "+error.message);
+alert("خطأ في تسجيل الدخول: " + error.message);
 
 });
 
 
-};
+}
 
 
+// حماية لوحة التحكم
 
-// حماية الصفحات
-onAuthStateChanged(auth,(user)=>{
+firebase.auth().onAuthStateChanged((user)=>{
+
 
 if(!user){
 
-if(
-window.location.pathname.includes("dashboard")
-){
+if(window.location.pathname.includes("dashboard")){
 
 window.location.href="index.html";
 
 }
 
 }
+
 
 });
 
 
 
 // تسجيل الخروج
-window.logout=function(){
 
-signOut(auth).then(()=>{
+function logout(){
+
+firebase.auth()
+.signOut()
+.then(()=>{
+
 
 localStorage.clear();
 
 window.location.href="index.html";
 
+
 });
 
-};
+
+}
