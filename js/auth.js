@@ -1,55 +1,84 @@
-// CENTER ALBAZIKI Authentication
+import { auth } from "./firebase-config.js";
 
-const provider = new firebase.auth.GoogleAuthProvider();
-
-
-// تسجيل الدخول بواسطة Google
-function loginGoogle() {
-
-    auth.signInWithPopup(provider)
-    .then((result) => {
-
-        const user = result.user;
-
-        // حفظ بيانات المستخدم في Firestore
-        db.collection("users").doc(user.uid).set({
-
-            name: user.displayName,
-            email: user.email,
-            photo: user.photoURL,
-            lastLogin: new Date()
-
-        }, { merge: true });
+import {
+GoogleAuthProvider,
+signInWithPopup,
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-        // الانتقال للوحة التحكم
-        window.location.href = "dashboard.html";
+const provider = new GoogleAuthProvider();
 
 
-    })
-    .catch((error) => {
+// تسجيل الدخول بجوجل
+window.loginGoogle = function(){
 
-        console.log(error);
+signInWithPopup(auth, provider)
 
-        alert("حدث خطأ في تسجيل الدخول");
+.then((result)=>{
 
-    });
+const user = result.user;
+
+
+// حفظ بيانات المستخدم
+localStorage.setItem(
+"userName",
+user.displayName
+);
+
+localStorage.setItem(
+"userEmail",
+user.email
+);
+
+
+// الانتقال للوحة التحكم
+window.location.href="dashboard.html";
+
+
+})
+
+
+.catch((error)=>{
+
+alert("فشل تسجيل الدخول: "+error.message);
+
+});
+
+
+};
+
+
+
+// حماية الصفحات
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+if(
+window.location.pathname.includes("dashboard")
+){
+
+window.location.href="index.html";
 
 }
 
-
-
-// مراقبة حالة الدخول
-auth.onAuthStateChanged((user)=>{
-
-    const page = window.location.pathname;
-
-
-    if(!user && page.includes("dashboard")){
-
-        window.location.href = "index.html";
-
-    }
-
+}
 
 });
+
+
+
+// تسجيل الخروج
+window.logout=function(){
+
+signOut(auth).then(()=>{
+
+localStorage.clear();
+
+window.location.href="index.html";
+
+});
+
+};
