@@ -1,400 +1,72 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Center Albaziki</title>
-
-<style>
-
-*{
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-margin:0;
-background:#05070a;
-color:white;
-min-height:100vh;
-}
-
-.page{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-background:
-radial-gradient(circle at top,#b8892d33,transparent 35%),
-linear-gradient(145deg,#030405,#11151c);
-}
-
-
-.card{
-width:100%;
-max-width:430px;
-background:#10141bcc;
-border:1px solid #d6aa4d55;
-border-radius:25px;
-padding:25px;
-box-shadow:0 20px 60px #000;
-}
-
-
-.logo{
-width:110px;
-height:110px;
-border-radius:50%;
-display:block;
-margin:auto;
-object-fit:cover;
-border:4px solid #d9b45b;
-}
-
-
-.brand{
-text-align:center;
-color:#e8c473;
-font-size:24px;
-font-weight:bold;
-margin-top:15px;
-}
-
-
-.subtitle{
-text-align:center;
-color:#aaa;
-margin-top:8px;
-}
-
-
-h2{
-text-align:center;
-margin:25px 0;
-}
-
-
-.social{
-width:100%;
-height:55px;
-border-radius:14px;
-border:0;
-font-size:16px;
-cursor:pointer;
-}
-
-
-.google{
-background:white;
-color:#222;
-}
-
-
-#app{
-display:none;
-width:100%;
-max-width:900px;
-margin:auto;
-padding:20px;
-}
-
-
-.app-title{
-text-align:center;
-color:#e8c473;
-}
-
-
-.box{
-background:#10141b;
-border:1px solid #d6aa4d55;
-padding:20px;
-border-radius:20px;
-}
-
-
-input{
-width:100%;
-height:50px;
-margin:6px 0;
-border-radius:12px;
-border:1px solid #333;
-background:#080a0d;
-color:white;
-padding:0 15px;
-}
-
-
-button{
-cursor:pointer;
-}
-
-
-.add{
-width:100%;
-height:50px;
-background:#d5aa4d;
-border:0;
-border-radius:12px;
-font-weight:bold;
-}
-
-
-.item{
-background:#151920;
-padding:15px;
-border-radius:15px;
-margin-top:12px;
-}
-
-
-.logout{
-margin:20px auto;
-display:block;
-padding:10px 25px;
-border-radius:10px;
-background:#222;
-color:white;
-border:1px solid #555;
-}
-
-
-</style>
-
+<title>Google Login Test</title>
 </head>
 
+<body style="background:#111;color:white;text-align:center;padding-top:100px;font-family:Arial">
 
-<body>
+<h2>تسجيل دخول Google</h2>
 
-
-<div class="page">
-
-
-<div class="card" id="loginPage">
-
-<img src="logo.jpg" class="logo">
-
-
-<div class="brand">
-CENTER ALBAZIKI
-</div>
-
-
-<div class="subtitle">
-إدارة المخزون باحترافية
-</div>
-
-
-<h2>
-مرحباً بك
-</h2>
-
-
-<button class="social google" onclick="googleLogin()">
-🔵 تسجيل الدخول باستخدام Google
+<button onclick="googleLogin()" style="padding:15px 30px;font-size:18px">
+تسجيل الدخول باستخدام Google
 </button>
 
+<p id="result"></p>
 
-</div>
-</div>
-
-
-<!-- لوحة المخزون -->
-
-<div id="app">
-
-<h1 class="app-title">
-👟 مخزون سنتر البازكي
-</h1>
-
-
-<button class="logout" onclick="logout()">
-تسجيل الخروج
-</button>
-
-
-<div class="box">
-
-<input id="model" placeholder="رقم الموديل">
-
-<input id="supplier" placeholder="اسم المورد">
-
-<input id="color" placeholder="اللون">
-
-<input id="qty" type="number" placeholder="عدد الكراتين">
-
-
-<button class="add" onclick="addModel()">
-إضافة موديل
-</button>
-
-
-</div>
-
-
-<div id="list"></div>
-
-
-</div>
-
-
-</div>
-
-
-<script>
-
-let shoes =
-JSON.parse(localStorage.getItem("shoes") || "[]");
-
-
-// تسجيل Google (سيتم ربط Firebase هنا)
-
-function oldGoogleLogin(){
-
-document.getElementById("loginPage").style.display="none";
-
-document.getElementById("app").style.display="block";
-
-showModels();
-
-}
-
-
-// تسجيل خروج
-
-function logout(){
-
-document.getElementById("app").style.display="none";
-
-document.getElementById("loginPage").style.display="block";
-
-}
-
-
-
-// إضافة موديل
-
-function addModel(){
-
-let model =
-document.getElementById("model").value;
-
-let supplier =
-document.getElementById("supplier").value;
-
-let color =
-document.getElementById("color").value;
-
-let qty =
-document.getElementById("qty").value;
-
-
-if(!model){
-
-alert("اكتب رقم الموديل");
-
-return;
-
-}
-
-
-shoes.push({
-
-model,
-supplier,
-color,
-qty
-
-});
-
-
-localStorage.setItem(
-"shoes",
-JSON.stringify(shoes)
-);
-
-
-showModels();
-
-
-document.getElementById("model").value="";
-document.getElementById("supplier").value="";
-document.getElementById("color").value="";
-document.getElementById("qty").value="";
-
-
-}
-
-
-
-// عرض المخزون
-
-function showModels(){
-
-let html="";
-
-
-shoes.forEach(function(s){
-
-html += `
-
-<div class="item">
-
-<b>الموديل:</b> ${s.model}<br>
-
-<b>المورد:</b> ${s.supplier}<br>
-
-<b>اللون:</b> ${s.color}<br>
-
-<b>الكراتين:</b> ${s.qty}
-
-</div>
-
-`;
-
-});
-
-
-document.getElementById("list").innerHTML=html;
-
-
-}
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { 
+getAuth,
+GoogleAuthProvider,
+signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBPiLbUPClwrvbvzmvEaaIu2FaAWWsA4TI",
-  authDomain: "centeralbaziki.firebaseapp.com",
-  projectId: "centeralbaziki",
-  storageBucket: "centeralbaziki.firebasestorage.app",
-  messagingSenderId: "368079353950",
-  appId: "1:368079353950:web:adb51c325e4208aba59ccf",
-  measurementId: "G-C5FG364ZDR"
+apiKey: "AIzaSyBPiLbUPClwrvbvzmvEaaIu2FaAWWsA4TI",
+authDomain: "centeralbaziki.firebaseapp.com",
+projectId: "centeralbaziki",
+storageBucket: "centeralbaziki.firebasestorage.app",
+messagingSenderId: "368079353950",
+appId: "1:368079353950:web:adb51c325e4208aba59ccf"
 };
 
-const appFirebase = initializeApp(firebaseConfig);
-const auth = getAuth(appFirebase);
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
 const provider = new GoogleAuthProvider();
 
-window.googleLogin = () => {
 
-  signInWithPopup(auth, provider)
-  .then((result)=>{
-    const user = result.user;
+window.googleLogin = function(){
 
-    alert("تم تسجيل الدخول: " + user.email);
+signInWithPopup(auth, provider)
 
-    document.getElementById("loginPage").style.display="none";
-    document.getElementById("app").style.display="block";
+.then((result)=>{
 
-  })
-  .catch((error)=>{
-    alert("خطأ: " + error.message);
-  });
+document.getElementById("result").innerHTML =
+"تم الدخول: " + result.user.email;
+
+})
+
+.catch((error)=>{
+
+document.getElementById("result").innerHTML =
+error.message;
+
+});
+
+}
 
 
 </script>
+
+</body>
+</html>
+
