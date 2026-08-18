@@ -1,283 +1,707 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إضافة موديل - CENTER ALBAZIKI</title>
+
+<title>موديل جديد - CENTER ALBAZIKI</title>
+
 <link rel="stylesheet" href="style.css">
+
 <style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
 .product-page {
-    max-width: 600px;
+    max-width: 650px;
     margin: auto;
     padding: 20px;
 }
-.product-title {
+
+.title {
     text-align: center;
     color: #d4af37;
-    font-size: 28px;
-    margin: 20px 0 30px;
+    margin: 20px 0 25px;
 }
-.product-form {
+
+.form-box {
     background: #1d1d1d;
     border: 1px solid #d4af37;
-    border-radius: 22px;
-    padding: 22px;
+    border-radius: 20px;
+    padding: 20px;
 }
-.form-group {
+
+.field {
     margin-bottom: 18px;
 }
-.form-group label {
+
+.field label {
     display: block;
     color: #d4af37;
-    font-size: 17px;
     font-weight: bold;
     margin-bottom: 8px;
 }
-.form-group input {
-    box-sizing: border-box;
+
+.field input {
     width: 100%;
-    display: block;
     padding: 14px;
-    border: 1px solid #555;
     border-radius: 12px;
+    border: 1px solid #555;
+    font-size: 17px;
     background: white;
     color: #111;
-    font-size: 17px;
-    font-family: Arial;
 }
-.color-row {
+
+/* الصورة */
+
+.image-box {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.image-preview {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 12px;
+    border-radius: 18px;
+    border: 2px dashed #d4af37;
     display: flex;
-    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #111;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-preview span {
+    color: #aaa;
+}
+
+.image-input {
+    color: white;
+    width: 100%;
+}
+
+/* الألوان */
+
+.color-title {
+    color: #d4af37;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.color-row {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.color-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     margin-bottom: 10px;
 }
-.color-row select,
-.color-row input {
-    box-sizing: border-box;
-    padding: 14px;
+
+.color-name {
+    flex: 1;
+}
+
+.color-name select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
     border: 1px solid #555;
-    border-radius: 12px;
-    background: white;
-    color: #111;
     font-size: 16px;
 }
-.color-row select {
-    flex: 1;
-}
-.color-row input {
-    flex: 1;
-}
-.remove-color {
-    width: 48px;
+
+.delete-color {
+    width: 44px;
+    height: 44px;
     border: none;
     border-radius: 10px;
-    background: #8b0000;
+    background: #555;
     color: white;
-    font-size: 22px;
+    font-size: 20px;
 }
+
+.color-stock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.stock-btn {
+    width: 52px;
+    height: 52px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.plus-btn {
+    background: #168a3b;
+}
+
+.minus-btn {
+    background: #a51d1d;
+}
+
+.stock-number {
+    min-width: 130px;
+    text-align: center;
+}
+
+.stock-number strong {
+    display: block;
+    color: #d4af37;
+    font-size: 28px;
+}
+
+.stock-number span {
+    display: block;
+    color: #aaa;
+    font-size: 14px;
+    margin-top: 3px;
+}
+
 .add-color {
     width: 100%;
     padding: 13px;
     border: 1px solid #d4af37;
-    border-radius: 12px;
     background: transparent;
     color: #d4af37;
+    border-radius: 12px;
     font-size: 17px;
     font-weight: bold;
     margin-top: 5px;
 }
-.save-btn {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 14px;
-    background: #d4af37;
-    color: #111;
-    font-size: 19px;
-    font-weight: bold;
-    margin-top: 20px;
+
+/* الحسابات */
+
+.summary {
+    margin-top: 22px;
+    background: #111;
+    border-radius: 15px;
+    padding: 18px;
+    border: 1px solid #333;
 }
-#message {
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 11px 0;
+    border-bottom: 1px solid #333;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-value {
+    color: #d4af37;
+    font-weight: bold;
+}
+
+.warning {
+    color: #ff4d4d;
+    font-weight: bold;
     text-align: center;
-    font-weight: bold;
-    margin-top: 15px;
+    margin-top: 12px;
 }
+
+.success {
+    color: #38d66b;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 12px;
+}
+
 </style>
+
 </head>
+
 <body>
+
 <div class="product-page">
-    <h1 class="product-title">
-        📦 إضافة موديل جديد
-    </h1>
-    <div class="product-form">
-        <!-- رقم الموديل -->
-        <div class="form-group">
-            <label>🔢 رقم الموديل</label>
-            <input
-                id="model"
-                type="text"
-                placeholder="مثال: 201"
-            >
+
+<h1 class="title">
+📦 إضافة موديل
+</h1>
+
+<div class="form-box">
+
+    <!-- صورة الموديل -->
+
+    <div class="image-box">
+
+        <div class="image-preview" id="imagePreview">
+            <span>📷 صورة الموديل</span>
         </div>
-        <!-- اسم المورد -->
-        <div class="form-group">
-            <label>🚚 اسم المورد</label>
-            <input
-                id="supplier"
-                type="text"
-                placeholder="اسم المورد"
-            >
-        </div>
-        <!-- عدد الكراتين -->
-        <div class="form-group">
-            <label>📦 عدد الكراتين</label>
-            <input
-                id="cartons"
-                type="number"
-                min="0"
-                placeholder="مثال: 100"
-            >
-        </div>
-        <!-- الألوان -->
-        <div class="form-group">
-            <label>🎨 الألوان والكميات</label>
-            <div id="colors">
-                <div class="color-row">
-                    <select>
-                        <option value="">
-                            اختر اللون
-                        </option>
-                        <option value="أسود">
-                            أسود
-                        </option>
-                        <option value="بني">
-                            بني
-                        </option>
-                        <option value="عسلي">
-                            عسلي
-                        </option>
-                        <option value="موغا">
-                            موغا
-                        </option>
-                        <option value="أبيض">
-                            أبيض
-                        </option>
-                        <option value="بيج">
-                            بيج
-                        </option>
-                        <option value="كحلي">
-                            كحلي
-                        </option>
-                        <option value="رمادي">
-                            رمادي
-                        </option>
-                    </select>
-                    <input
-                        type="number"
-                        min="0"
-                        placeholder="عدد الكراتين"
-                    >
-                </div>
-            </div>
-            <button
-                type="button"
-                class="add-color"
-                onclick="addColor()"
-            >
-                ➕ إضافة لون آخر
-            </button>
-        </div>
-        <!-- عدد الأزواج -->
-        <div class="form-group">
-            <label>
-                👞 عدد الأزواج داخل الكرتونة
-            </label>
-            <input
-                id="pairsPerCarton"
-                type="number"
-                min="1"
-                placeholder="مثال: 8"
-            >
-        </div>
-        <!-- سعر رأس المال -->
-        <div class="form-group">
-            <label>
-                💵 سعر رأس المال للزوج بالدولار
-            </label>
-            <input
-                id="costPerPair"
-                type="number"
-                min="0"
-                step="0.01"
-                placeholder="مثال: 6.50"
-            >
-        </div>
-        <!-- زر الحفظ -->
-        <button
-            id="saveProductBtn"
-            class="save-btn"
-            onclick="saveProduct()"
-        >
-            💾 حفظ الموديل
-        </button>
-        <p id="message"></p>
-    </div>
-</div>
-<script>
-function addColor() {
-    const colors =
-        document.getElementById("colors");
-    const row =
-        document.createElement("div");
-    row.className = "color-row";
-    row.innerHTML = `
-        <select>
-            <option value="">
-                اختر اللون
-            </option>
-            <option value="أسود">
-                أسود
-            </option>
-            <option value="بني">
-                بني
-            </option>
-            <option value="عسلي">
-                عسلي
-            </option>
-            <option value="موغا">
-                موغا
-            </option>
-            <option value="أبيض">
-                أبيض
-            </option>
-            <option value="بيج">
-                بيج
-            </option>
-            <option value="كحلي">
-                كحلي
-            </option>
-            <option value="رمادي">
-                رمادي
-            </option>
-        </select>
+
         <input
+            class="image-input"
+            id="productImage"
+            type="file"
+            accept="image/*"
+            onchange="previewImage(event)"
+        >
+
+    </div>
+
+
+    <!-- رقم الموديل -->
+
+    <div class="field">
+
+        <label>🔢 رقم الموديل</label>
+
+        <input
+            id="model"
+            type="text"
+            placeholder="مثال: 201"
+        >
+
+    </div>
+
+
+    <!-- المورد -->
+
+    <div class="field">
+
+        <label>🚚 اسم المورد</label>
+
+        <input
+            id="supplier"
+            type="text"
+            placeholder="اسم المورد"
+        >
+
+    </div>
+
+
+    <!-- إجمالي الكراتين -->
+
+    <div class="field">
+
+        <label>📦 إجمالي عدد الكراتين</label>
+
+        <input
+            id="totalCartons"
             type="number"
             min="0"
-            placeholder="عدد الكراتين"
+            step="1"
+            inputmode="numeric"
+            placeholder="مثال: 100"
+            oninput="calculate()"
         >
+
+    </div>
+
+
+    <!-- الألوان -->
+
+    <div class="field">
+
+        <div class="color-title">
+            🎨 ألوان الموديل والمخزون
+        </div>
+
+        <div id="colors"></div>
+
         <button
             type="button"
-            class="remove-color"
-            onclick="this.parentElement.remove()"
+            class="add-color"
+            onclick="addColor()"
         >
-            ×
+            ➕ إضافة لون
         </button>
-    `;
-    colors.appendChild(row);
+
+    </div>
+
+
+    <!-- الأزواج -->
+
+    <div class="field">
+
+        <label>👞 عدد الأزواج داخل الكرتونة</label>
+
+        <input
+            id="pairsPerCarton"
+            type="number"
+            min="1"
+            step="1"
+            inputmode="numeric"
+            placeholder="مثال: 8"
+            oninput="calculate()"
+        >
+
+    </div>
+
+
+    <!-- السعر -->
+
+    <div class="field">
+
+        <label>💵 سعر رأس المال للزوج بالدولار</label>
+
+        <input
+            id="costPerPair"
+            type="number"
+            min="0"
+            step="0.01"
+            inputmode="decimal"
+            placeholder="مثال: 6.50"
+            oninput="calculate()"
+        >
+
+    </div>
+
+
+    <!-- النتائج -->
+
+    <div class="summary">
+
+        <div class="summary-item">
+            <span>📦 إجمالي الكراتين</span>
+
+            <span
+                id="totalCartonsDisplay"
+                class="summary-value"
+            >0</span>
+        </div>
+
+
+        <div class="summary-item">
+            <span>🎨 مجموع كراتين الألوان</span>
+
+            <span
+                id="colorCartonsDisplay"
+                class="summary-value"
+            >0</span>
+        </div>
+
+
+        <div class="summary-item">
+            <span>👞 إجمالي الأزواج</span>
+
+            <span
+                id="totalPairsDisplay"
+                class="summary-value"
+            >0</span>
+        </div>
+
+
+        <div class="summary-item">
+            <span>💰 إجمالي رأس المال</span>
+
+            <span
+                id="totalCapitalDisplay"
+                class="summary-value"
+            >$0.00</span>
+        </div>
+
+
+        <div id="validationMessage"></div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   صورة الموديل
+========================= */
+
+function previewImage(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        document.getElementById("imagePreview").innerHTML = `
+            <img src="${e.target.result}" alt="صورة الموديل">
+        `;
+
+    };
+
+    reader.readAsDataURL(file);
 }
+
+
+/* =========================
+   قائمة الألوان
+========================= */
+
+function colorOptions() {
+
+    return `
+        <option value="">اختر اللون</option>
+        <option value="أسود">أسود</option>
+        <option value="بني">بني</option>
+        <option value="عسلي">عسلي</option>
+        <option value="موغا">موغا</option>
+        <option value="أبيض">أبيض</option>
+        <option value="بيج">بيج</option>
+        <option value="كحلي">كحلي</option>
+        <option value="رمادي">رمادي</option>
+        <option value="أحمر">أحمر</option>
+        <option value="أخضر">أخضر</option>
+        <option value="أزرق">أزرق</option>
+    `;
+
+}
+
+
+/* =========================
+   إضافة لون
+========================= */
+
+function addColor() {
+
+    const container =
+        document.getElementById("colors");
+
+    const row =
+        document.createElement("div");
+
+    row.className = "color-row";
+
+    row.innerHTML = `
+
+        <div class="color-top">
+
+            <div class="color-name">
+
+                <select onchange="calculate()">
+                    ${colorOptions()}
+                </select>
+
+            </div>
+
+            <button
+                type="button"
+                class="delete-color"
+                onclick="this.closest('.color-row').remove(); calculate();"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="color-stock">
+
+            <button
+                type="button"
+                class="stock-btn minus-btn"
+                onclick="changeColorQuantity(this, -1)"
+            >
+                −
+            </button>
+
+
+            <div class="stock-number">
+
+                <strong class="quantity">
+                    0
+                </strong>
+
+                <span>
+                    كرتونة متبقية
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="stock-btn plus-btn"
+                onclick="changeColorQuantity(this, 1)"
+            >
+                +
+            </button>
+
+        </div>
+
+    `;
+
+    container.appendChild(row);
+
+    calculate();
+
+}
+
+
+/* =========================
+   تغيير كمية اللون
+========================= */
+
+function changeColorQuantity(button, amount) {
+
+    const row =
+        button.closest(".color-row");
+
+    const quantity =
+        row.querySelector(".quantity");
+
+    let value =
+        Number(quantity.textContent) || 0;
+
+    value += amount;
+
+    if (value < 0) {
+        value = 0;
+    }
+
+    quantity.textContent = value;
+
+    calculate();
+
+}
+
+
+/* =========================
+   الحسابات
+========================= */
+
+function calculate() {
+
+    const totalCartons =
+        Number(
+            document.getElementById("totalCartons").value
+        ) || 0;
+
+
+    const pairsPerCarton =
+        Number(
+            document.getElementById("pairsPerCarton").value
+        ) || 0;
+
+
+    const costPerPair =
+        Number(
+            document.getElementById("costPerPair").value
+        ) || 0;
+
+
+    let colorCartons = 0;
+
+
+    document
+        .querySelectorAll("#colors .color-row")
+        .forEach(row => {
+
+            const quantity =
+                row.querySelector(".quantity");
+
+            colorCartons +=
+                Number(quantity.textContent) || 0;
+
+        });
+
+
+    const totalPairs =
+        totalCartons * pairsPerCarton;
+
+
+    const totalCapital =
+        totalPairs * costPerPair;
+
+
+    document.getElementById(
+        "totalCartonsDisplay"
+    ).textContent =
+        totalCartons;
+
+
+    document.getElementById(
+        "colorCartonsDisplay"
+    ).textContent =
+        colorCartons;
+
+
+    document.getElementById(
+        "totalPairsDisplay"
+    ).textContent =
+        totalPairs;
+
+
+    document.getElementById(
+        "totalCapitalDisplay"
+    ).textContent =
+        "$" + totalCapital.toFixed(2);
+
+
+    const message =
+        document.getElementById(
+            "validationMessage"
+        );
+
+
+    if (totalCartons === 0) {
+
+        message.innerHTML = "";
+
+        return;
+    }
+
+
+    if (colorCartons === totalCartons) {
+
+        message.className = "success";
+
+        message.textContent =
+            "✅ مجموع الألوان مطابق لعدد الكراتين";
+
+    } else {
+
+        message.className = "warning";
+
+        message.textContent =
+            "❌ مجموع كراتين الألوان يجب أن يساوي إجمالي الكراتين";
+
+    }
+
+}
+
+
+/* إضافة أول لون تلقائياً */
+
+addColor();
+
 </script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="products.js"></script>
+
 </body>
+
 </html>
