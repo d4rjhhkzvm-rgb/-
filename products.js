@@ -17,8 +17,9 @@ async function saveProduct() {
         document.getElementById("costPerPair").value
     ) || 0;
 
-    const message = document.getElementById("message");
-    const button = document.getElementById("saveProductBtn");
+    // مهم: هذه هي الـ IDs الموجودة فعلياً في HTML
+    const message = document.getElementById("saveMessage");
+    const button = document.querySelector(".save-btn");
 
 
     // =========================
@@ -65,12 +66,10 @@ async function saveProduct() {
 
     colorRows.forEach(row => {
 
-        const select = row.querySelector("select");
+        const select =
+            row.querySelector("select");
 
-        const numberInput =
-            row.querySelector('input[type="number"]');
-
-        const quantityElement =
+        const input =
             row.querySelector(".quantity");
 
 
@@ -78,26 +77,11 @@ async function saveProduct() {
             select ? select.value.trim() : "";
 
 
-        let quantity = 0;
+        const quantity =
+            input ? Number(input.value) || 0 : 0;
 
 
-        // إذا كان اللون يستخدم خانة رقم
-        if (numberInput) {
-
-            quantity =
-                Number(numberInput.value) || 0;
-
-        }
-
-        // وإذا كان يستخدم الرقم الموجود بالنص
-        else if (quantityElement) {
-
-            quantity =
-                Number(quantityElement.textContent) || 0;
-
-        }
-
-
+        // إذا اللون مختار أو الكمية موجودة
         if (colorName) {
 
             colors.push({
@@ -112,7 +96,7 @@ async function saveProduct() {
 
 
     // =========================
-    // التحقق من تطابق الألوان
+    // لازم يكون في لون
     // =========================
 
     if (colors.length === 0) {
@@ -123,12 +107,17 @@ async function saveProduct() {
     }
 
 
+    // =========================
+    // مطابقة الكراتين
+    // =========================
+
     if (colorCartons !== cartons) {
 
         alert(
-            "❌ مجموع كراتين الألوان يجب أن يساوي إجمالي عدد الكراتين\n\n" +
+            "❌ لا يمكن الحفظ\n\n" +
             "إجمالي الكراتين: " + cartons +
-            "\nمجموع الألوان: " + colorCartons
+            "\nمجموع كراتين الألوان: " + colorCartons +
+            "\n\nيجب أن يكون الرقمين متساويين."
         );
 
         return;
@@ -151,10 +140,12 @@ async function saveProduct() {
     // تعطيل زر الحفظ
     // =========================
 
-    button.disabled = true;
+    if (button) {
 
-    button.innerText =
-        "⏳ جاري الحفظ...";
+        button.disabled = true;
+        button.innerText = "⏳ جاري الحفظ...";
+
+    }
 
 
     try {
@@ -179,6 +170,8 @@ async function saveProduct() {
 
             totalCapital: totalCapital,
 
+            colorCartons: colorCartons,
+
             colors: colors,
 
             createdAt:
@@ -191,11 +184,18 @@ async function saveProduct() {
         // رسالة نجاح
         // =========================
 
-        message.innerText =
-            "✅ تم حفظ الموديل بنجاح";
+        if (message) {
 
-        message.style.color =
-            "#38d66b";
+            message.innerText =
+                "✅ تم حفظ الموديل بنجاح";
+
+            message.style.color =
+                "#38d66b";
+
+        }
+
+
+        alert("✅ تم حفظ الموديل بنجاح");
 
 
         // =========================
@@ -213,11 +213,14 @@ async function saveProduct() {
         document.getElementById("costPerPair").value = "";
 
 
-        // إعادة الألوان
+        // =========================
+        // تنظيف الألوان
+        // =========================
+
         document.getElementById("colors").innerHTML = "";
 
 
-        // إضافة لون جديد فارغ
+        // إضافة لون فارغ جديد
         if (typeof addColor === "function") {
 
             addColor();
@@ -225,15 +228,19 @@ async function saveProduct() {
         }
 
 
-        // تحديث الحسابات
+        // =========================
+        // إعادة الحساب
+        // =========================
+
         if (typeof calculate === "function") {
 
             calculate();
 
         }
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
             "Firebase Error:",
@@ -241,24 +248,34 @@ async function saveProduct() {
         );
 
 
-        message.innerText =
-            "❌ حدث خطأ أثناء الحفظ";
+        if (message) {
 
-        message.style.color =
-            "red";
+            message.innerText =
+                "❌ حدث خطأ أثناء الحفظ";
+
+            message.style.color =
+                "#ff4d4d";
+
+        }
 
 
         alert(
-            "خطأ في الحفظ:\n" +
+            "❌ حدث خطأ أثناء الحفظ:\n\n" +
             error.message
         );
 
-    } finally {
+    }
 
-        button.disabled = false;
+    finally {
 
-        button.innerText =
-            "💾 حفظ الموديل";
+        if (button) {
+
+            button.disabled = false;
+
+            button.innerText =
+                "💾 حفظ الموديل";
+
+        }
 
     }
 
