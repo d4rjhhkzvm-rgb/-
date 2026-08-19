@@ -2,36 +2,27 @@ const db = firebase.firestore();
 
 async function saveProduct() {
 
-    const model =
-        document.getElementById("model").value.trim();
+    const model = document.getElementById("model").value.trim();
+    const supplier = document.getElementById("supplier").value.trim();
 
-    const supplier =
-        document.getElementById("supplier").value.trim();
+    const cartons = Number(
+        document.getElementById("totalCartons").value
+    ) || 0;
 
-    const cartons =
-        Number(
-            document.getElementById("totalCartons").value
-        ) || 0;
+    const pairsPerCarton = Number(
+        document.getElementById("pairsPerCarton").value
+    ) || 0;
 
-    const pairsPerCarton =
-        Number(
-            document.getElementById("pairsPerCarton").value
-        ) || 0;
+    const costPerPair = Number(
+        document.getElementById("costPerPair").value
+    ) || 0;
 
-    const costPerPair =
-        Number(
-            document.getElementById("costPerPair").value
-        ) || 0;
-
-    const message =
-        document.getElementById("saveMessage");
-
-    const button =
-        document.querySelector(".save-btn");
+    const message = document.getElementById("message");
+    const button = document.getElementById("saveProductBtn");
 
 
     // =========================
-    // التحقق
+    // التحقق من البيانات
     // =========================
 
     if (!model) {
@@ -45,7 +36,7 @@ async function saveProduct() {
     }
 
     if (cartons <= 0) {
-        alert("يرجى إدخال إجمالي عدد الكراتين");
+        alert("يرجى إدخال عدد الكراتين");
         return;
     }
 
@@ -64,53 +55,45 @@ async function saveProduct() {
     // جمع الألوان
     // =========================
 
-    const rows =
-        document.querySelectorAll(
-            "#colors .color-row"
-        );
+    const colorRows =
+        document.querySelectorAll("#colors .color-row");
 
     const colors = [];
 
     let colorCartons = 0;
 
 
-    rows.forEach(row => {
+    colorRows.forEach(row => {
 
-        const select =
-            row.querySelector("select");
+        const select = row.querySelector("select");
 
-        const colorName =
-            select
-                ? select.value.trim()
-                : "";
-
-
-        // يدعم خانة الرقم الجديدة
         const numberInput =
-            row.querySelector(
-                ".quantity-input, input[type='number']"
-            );
+            row.querySelector('input[type="number"]');
 
-
-        // ويدعم الشكل القديم
         const quantityElement =
             row.querySelector(".quantity");
+
+
+        const colorName =
+            select ? select.value.trim() : "";
 
 
         let quantity = 0;
 
 
+        // إذا كان اللون يستخدم خانة رقم
         if (numberInput) {
 
             quantity =
                 Number(numberInput.value) || 0;
 
-        } else if (quantityElement) {
+        }
+
+        // وإذا كان يستخدم الرقم الموجود بالنص
+        else if (quantityElement) {
 
             quantity =
-                Number(quantityElement.value) ||
-                Number(quantityElement.textContent) ||
-                0;
+                Number(quantityElement.textContent) || 0;
 
         }
 
@@ -118,29 +101,23 @@ async function saveProduct() {
         if (colorName) {
 
             colors.push({
-
                 name: colorName,
-
                 cartons: quantity
-
             });
 
             colorCartons += quantity;
-
         }
 
     });
 
 
     // =========================
-    // التحقق من مجموع الألوان
+    // التحقق من تطابق الألوان
     // =========================
 
     if (colors.length === 0) {
 
-        alert(
-            "يرجى إضافة لون واحد على الأقل"
-        );
+        alert("يرجى إضافة لون واحد على الأقل");
 
         return;
     }
@@ -149,7 +126,7 @@ async function saveProduct() {
     if (colorCartons !== cartons) {
 
         alert(
-            "❌ مجموع كراتين الألوان لا يساوي إجمالي الكراتين.\n\n" +
+            "❌ مجموع كراتين الألوان يجب أن يساوي إجمالي عدد الكراتين\n\n" +
             "إجمالي الكراتين: " + cartons +
             "\nمجموع الألوان: " + colorCartons
         );
@@ -165,108 +142,82 @@ async function saveProduct() {
     const totalPairs =
         cartons * pairsPerCarton;
 
+
     const totalCapital =
         totalPairs * costPerPair;
 
 
     // =========================
-    // بدء الحفظ
+    // تعطيل زر الحفظ
     // =========================
 
-    if (button) {
+    button.disabled = true;
 
-        button.disabled = true;
-
-        button.innerText =
-            "⏳ جاري الحفظ...";
-
-    }
+    button.innerText =
+        "⏳ جاري الحفظ...";
 
 
     try {
 
-        await db
-            .collection("products")
-            .add({
+        // =========================
+        // الحفظ في Firebase
+        // =========================
 
-                model: model,
+        await db.collection("products").add({
 
-                supplier: supplier,
+            model: model,
 
-                cartons: cartons,
+            supplier: supplier,
 
-                colors: colors,
+            cartons: cartons,
 
-                pairsPerCarton:
-                    pairsPerCarton,
+            pairsPerCarton: pairsPerCarton,
 
-                costPerPair:
-                    costPerPair,
+            costPerPair: costPerPair,
 
-                totalPairs:
-                    totalPairs,
+            totalPairs: totalPairs,
 
-                totalCapital:
-                    totalCapital,
+            totalCapital: totalCapital,
 
-                createdAt:
-                    firebase.firestore
-                    .FieldValue
-                    .serverTimestamp()
+            colors: colors,
 
-            });
+            createdAt:
+                firebase.firestore.FieldValue.serverTimestamp()
+
+        });
 
 
         // =========================
-        // نجاح
+        // رسالة نجاح
         // =========================
 
-        if (message) {
+        message.innerText =
+            "✅ تم حفظ الموديل بنجاح";
 
-            message.textContent =
-                "✅ تم حفظ الموديل بنجاح";
-
-            message.style.color =
-                "#38d66b";
-
-        }
+        message.style.color =
+            "#38d66b";
 
 
-        alert("✅ تم حفظ الموديل بنجاح");
+        // =========================
+        // تنظيف البيانات
+        // =========================
+
+        document.getElementById("model").value = "";
+
+        document.getElementById("supplier").value = "";
+
+        document.getElementById("totalCartons").value = "";
+
+        document.getElementById("pairsPerCarton").value = "";
+
+        document.getElementById("costPerPair").value = "";
 
 
-        // تنظيف الحقول
-
-        document.getElementById(
-            "model"
-        ).value = "";
-
-        document.getElementById(
-            "supplier"
-        ).value = "";
-
-        document.getElementById(
-            "totalCartons"
-        ).value = "";
-
-        document.getElementById(
-            "pairsPerCarton"
-        ).value = "";
-
-        document.getElementById(
-            "costPerPair"
-        ).value = "";
+        // إعادة الألوان
+        document.getElementById("colors").innerHTML = "";
 
 
-        // تنظيف الألوان
-
-        document.getElementById(
-            "colors"
-        ).innerHTML = "";
-
-
-        // إضافة لون جديد
-
+        // إضافة لون جديد فارغ
         if (typeof addColor === "function") {
 
             addColor();
@@ -274,8 +225,7 @@ async function saveProduct() {
         }
 
 
-        // إعادة الحساب
-
+        // تحديث الحسابات
         if (typeof calculate === "function") {
 
             calculate();
@@ -291,33 +241,24 @@ async function saveProduct() {
         );
 
 
-        if (message) {
+        message.innerText =
+            "❌ حدث خطأ أثناء الحفظ";
 
-            message.textContent =
-                "❌ فشل الحفظ";
-
-            message.style.color =
-                "red";
-
-        }
+        message.style.color =
+            "red";
 
 
         alert(
-            "❌ فشل الحفظ:\n\n" +
+            "خطأ في الحفظ:\n" +
             error.message
         );
 
-
     } finally {
 
-        if (button) {
+        button.disabled = false;
 
-            button.disabled = false;
-
-            button.innerText =
-                "💾 حفظ الموديل";
-
-        }
+        button.innerText =
+            "💾 حفظ الموديل";
 
     }
 
