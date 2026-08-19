@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>موديل جديد - CENTER ALBAZIKI</title>
+<title>إضافة موديل - CENTER ALBAZIKI</title>
 
 <style>
 *{
@@ -59,6 +59,8 @@ body{
     color:#111;
 }
 
+/* الصورة */
+
 .image-box{
     text-align:center;
     margin-bottom:20px;
@@ -91,6 +93,8 @@ body{
     color:white;
     width:100%;
 }
+
+/* الألوان */
 
 .color-title{
     color:#d4af37;
@@ -134,7 +138,10 @@ body{
     background:#a51d1d;
     color:white;
     font-size:20px;
+    cursor:pointer;
 }
+
+/* الكمية */
 
 .color-stock{
     display:flex;
@@ -190,7 +197,10 @@ body{
     border-radius:12px;
     font-size:17px;
     font-weight:bold;
+    cursor:pointer;
 }
+
+/* الحسابات */
 
 .summary{
     margin-top:22px;
@@ -230,6 +240,8 @@ body{
     margin-top:12px;
 }
 
+/* الحفظ */
+
 .save-btn{
     width:100%;
     margin-top:22px;
@@ -245,6 +257,7 @@ body{
 
 .save-btn:disabled{
     opacity:.6;
+    cursor:not-allowed;
 }
 
 .save-message{
@@ -254,6 +267,7 @@ body{
     min-height:25px;
 }
 </style>
+
 </head>
 
 <body>
@@ -264,206 +278,194 @@ body{
 
 <div class="form-box">
 
-<!-- الصورة -->
+    <!-- الصورة -->
 
-<div class="image-box">
+    <div class="image-box">
 
-    <div class="image-preview" id="imagePreview">
-        <span>📷 صورة الموديل</span>
+        <div class="image-preview" id="imagePreview">
+            <span>📷 صورة الموديل</span>
+        </div>
+
+        <input
+            class="image-input"
+            id="productImage"
+            type="file"
+            accept="image/*"
+            onchange="previewImage(event)"
+        >
+
     </div>
 
-    <input
-        class="image-input"
-        id="productImage"
-        type="file"
-        accept="image/*"
-        onchange="previewImage(event)"
-    >
 
-</div>
+    <!-- رقم الموديل -->
 
+    <div class="field">
 
-<!-- رقم الموديل -->
+        <label>🔢 رقم الموديل</label>
 
-<div class="field">
+        <input
+            id="model"
+            type="text"
+            placeholder="مثال: 201"
+        >
 
-    <label>🔢 رقم الموديل</label>
-
-    <input
-        id="model"
-        type="text"
-        placeholder="مثال: 201"
-    >
-
-</div>
-
-
-<!-- المورد -->
-
-<div class="field">
-
-    <label>🚚 اسم المورد</label>
-
-    <input
-        id="supplier"
-        type="text"
-        placeholder="اسم المورد"
-    >
-
-</div>
-
-
-<!-- الكراتين -->
-
-<div class="field">
-
-    <label>📦 إجمالي عدد الكراتين</label>
-
-    <input
-        id="totalCartons"
-        type="number"
-        min="0"
-        step="1"
-        inputmode="numeric"
-        placeholder="مثال: 100"
-        oninput="calculate()"
-    >
-
-</div>
-
-
-<!-- الألوان -->
-
-<div class="field">
-
-    <div class="color-title">
-        🎨 ألوان الموديل والمخزون
     </div>
 
-    <div id="colors"></div>
+
+    <!-- المورد -->
+
+    <div class="field">
+
+        <label>🚚 اسم المورد</label>
+
+        <input
+            id="supplier"
+            type="text"
+            placeholder="اسم المورد"
+        >
+
+    </div>
+
+
+    <!-- إجمالي الكراتين -->
+
+    <div class="field">
+
+        <label>📦 إجمالي عدد الكراتين</label>
+
+        <input
+            id="totalCartons"
+            type="number"
+            min="0"
+            step="1"
+            inputmode="numeric"
+            placeholder="مثال: 100"
+            oninput="calculate()"
+        >
+
+    </div>
+
+
+    <!-- الألوان -->
+
+    <div class="field">
+
+        <div class="color-title">
+            🎨 ألوان الموديل والمخزون
+        </div>
+
+        <div id="colors"></div>
+
+        <button
+            type="button"
+            class="add-color"
+            onclick="addColor()"
+        >
+            ➕ إضافة لون
+        </button>
+
+    </div>
+
+
+    <!-- الأزواج -->
+
+    <div class="field">
+
+        <label>👞 عدد الأزواج داخل الكرتونة</label>
+
+        <input
+            id="pairsPerCarton"
+            type="number"
+            min="1"
+            step="1"
+            inputmode="numeric"
+            placeholder="مثال: 8"
+            oninput="calculate()"
+        >
+
+    </div>
+
+
+    <!-- السعر -->
+
+    <div class="field">
+
+        <label>💵 سعر رأس المال للزوج بالدولار</label>
+
+        <input
+            id="costPerPair"
+            type="number"
+            min="0"
+            step="0.01"
+            inputmode="decimal"
+            placeholder="مثال: 6.5"
+            oninput="calculate()"
+        >
+
+    </div>
+
+
+    <!-- الحسابات -->
+
+    <div class="summary">
+
+        <div class="summary-item">
+            <span>📦 إجمالي الكراتين</span>
+            <span id="totalCartonsDisplay" class="summary-value">0</span>
+        </div>
+
+        <div class="summary-item">
+            <span>🎨 مجموع كراتين الألوان</span>
+            <span id="colorCartonsDisplay" class="summary-value">0</span>
+        </div>
+
+        <div class="summary-item">
+            <span>👞 إجمالي الأزواج</span>
+            <span id="totalPairsDisplay" class="summary-value">0</span>
+        </div>
+
+        <div class="summary-item">
+            <span>💰 إجمالي رأس المال</span>
+            <span id="totalCapitalDisplay" class="summary-value">$0.00</span>
+        </div>
+
+        <div id="validationMessage"></div>
+
+    </div>
+
+
+    <!-- زر الحفظ -->
 
     <button
         type="button"
-        class="add-color"
-        onclick="addColor()"
+        id="saveProductBtn"
+        class="save-btn"
+        onclick="saveProduct()"
     >
-        ➕ إضافة لون
+        💾 حفظ الموديل
     </button>
 
+    <div
+        id="saveMessage"
+        class="save-message"
+    ></div>
+
 </div>
-
-
-<!-- الأزواج -->
-
-<div class="field">
-
-    <label>👞 عدد الأزواج داخل الكرتونة</label>
-
-    <input
-        id="pairsPerCarton"
-        type="number"
-        min="1"
-        step="1"
-        inputmode="numeric"
-        placeholder="مثال: 8"
-        oninput="calculate()"
-    >
 
 </div>
 
 
-<!-- السعر -->
-
-<div class="field">
-
-    <label>💵 سعر رأس المال للزوج بالدولار</label>
-
-    <input
-        id="costPerPair"
-        type="number"
-        min="0"
-        step="0.01"
-        inputmode="decimal"
-        placeholder="مثال: 6.5"
-        oninput="calculate()"
-    >
-
-</div>
-
-
-<!-- الحسابات -->
-
-<div class="summary">
-
-    <div class="summary-item">
-        <span>📦 إجمالي الكراتين</span>
-        <span id="totalCartonsDisplay" class="summary-value">0</span>
-    </div>
-
-    <div class="summary-item">
-        <span>🎨 مجموع كراتين الألوان</span>
-        <span id="colorCartonsDisplay" class="summary-value">0</span>
-    </div>
-
-    <div class="summary-item">
-        <span>👞 إجمالي الأزواج</span>
-        <span id="totalPairsDisplay" class="summary-value">0</span>
-    </div>
-
-    <div class="summary-item">
-        <span>💰 إجمالي رأس المال</span>
-        <span id="totalCapitalDisplay" class="summary-value">$0.00</span>
-    </div>
-
-    <div id="validationMessage"></div>
-
-</div>
-
-
-<!-- الحفظ -->
-
-<button
-    type="button"
-    id="saveProductBtn"
-    class="save-btn"
-    onclick="saveProduct()"
->
-    💾 حفظ الموديل
-</button>
-
-<div
-    id="saveMessage"
-    class="save-message"
-></div>
-
-</div>
-</div>
-
-
-<!-- =========================
-     Firebase
-========================= -->
+<!-- Firebase -->
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
 <script src="js/firebase-config.js"></script>
 
 
 <script>
-
-/* =========================
-   Firebase
-========================= */
-
-const db = firebase.firestore();
-const storage = firebase.storage();
-
 
 /* =========================
    صورة الموديل
@@ -479,8 +481,9 @@ function previewImage(event){
 
     reader.onload = function(e){
 
-        document.getElementById("imagePreview").innerHTML =
-            '<img src="' + e.target.result + '" alt="صورة الموديل">';
+        document.getElementById("imagePreview").innerHTML = `
+            <img src="${e.target.result}" alt="صورة الموديل">
+        `;
 
     };
 
@@ -489,7 +492,7 @@ function previewImage(event){
 
 
 /* =========================
-   الألوان
+   خيارات الألوان
 ========================= */
 
 function colorOptions(){
@@ -508,6 +511,7 @@ function colorOptions(){
         <option value="أخضر">أخضر</option>
         <option value="أزرق">أزرق</option>
     `;
+
 }
 
 
@@ -545,6 +549,7 @@ function addColor(){
 
         </div>
 
+
         <div class="color-stock">
 
             <button
@@ -554,6 +559,7 @@ function addColor(){
             >
                 −
             </button>
+
 
             <div>
 
@@ -573,6 +579,7 @@ function addColor(){
 
             </div>
 
+
             <button
                 type="button"
                 class="stock-btn plus-btn"
@@ -582,6 +589,7 @@ function addColor(){
             </button>
 
         </div>
+
     `;
 
     container.appendChild(row);
@@ -596,7 +604,11 @@ function addColor(){
 
 function removeColor(button){
 
-    button.closest(".color-row").remove();
+    const row = button.closest(".color-row");
+
+    if(row){
+        row.remove();
+    }
 
     calculate();
 }
@@ -606,7 +618,7 @@ function removeColor(button){
    + و -
 ========================= */
 
-function changeColorQuantity(button,amount){
+function changeColorQuantity(button, amount){
 
     const row = button.closest(".color-row");
 
@@ -632,14 +644,15 @@ function changeColorQuantity(button,amount){
 
 function calculate(){
 
-    const cartons =
+    const totalCartons =
         Number(document.getElementById("totalCartons").value) || 0;
 
-    const pairs =
+    const pairsPerCarton =
         Number(document.getElementById("pairsPerCarton").value) || 0;
 
-    const price =
+    const costPerPair =
         Number(document.getElementById("costPerPair").value) || 0;
+
 
     let colorCartons = 0;
 
@@ -651,12 +664,16 @@ function calculate(){
 
     });
 
-    const totalPairs = cartons * pairs;
 
-    const totalCapital = totalPairs * price;
+    const totalPairs =
+        totalCartons * pairsPerCarton;
+
+    const totalCapital =
+        totalPairs * costPerPair;
+
 
     document.getElementById("totalCartonsDisplay").textContent =
-        cartons;
+        totalCartons;
 
     document.getElementById("colorCartonsDisplay").textContent =
         colorCartons;
@@ -667,27 +684,36 @@ function calculate(){
     document.getElementById("totalCapitalDisplay").textContent =
         "$" + totalCapital.toFixed(2);
 
+
     const message =
         document.getElementById("validationMessage");
 
-    if(cartons === 0){
+
+    if(totalCartons === 0){
 
         message.className = "";
         message.textContent = "";
 
-    }else if(colorCartons === cartons){
+        return;
+    }
+
+
+    if(colorCartons === totalCartons){
 
         message.className = "success";
+
         message.textContent =
             "✅ مجموع الألوان مطابق لعدد الكراتين";
 
     }else{
 
         message.className = "warning";
+
         message.textContent =
             "❌ مجموع كراتين الألوان يجب أن يساوي إجمالي الكراتين";
 
     }
+
 }
 
 
@@ -705,15 +731,18 @@ function getColors(){
 
         const input = row.querySelector(".quantity");
 
-        const name = select.value.trim();
+        const name = select ? select.value.trim() : "";
 
-        const cartons = Number(input.value) || 0;
+        const cartons = input
+            ? Number(input.value) || 0
+            : 0;
+
 
         if(name){
 
             colors.push({
-                name:name,
-                cartons:cartons
+                name: name,
+                cartons: cartons
             });
 
         }
@@ -734,22 +763,23 @@ async function uploadImage(file){
         return "";
     }
 
-    const fileName =
-        "products/" +
-        Date.now() +
-        "_" +
+    const safeName =
         file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
 
-    const ref = storage.ref().child(fileName);
+    const fileName =
+        "products/" + Date.now() + "_" + safeName;
 
-    await ref.put(file);
+    const storageRef =
+        firebase.storage().ref().child(fileName);
 
-    return await ref.getDownloadURL();
+    await storageRef.put(file);
+
+    return await storageRef.getDownloadURL();
 }
 
 
 /* =========================
-   حفظ المنتج
+   حفظ الموديل
 ========================= */
 
 async function saveProduct(){
@@ -776,6 +806,7 @@ async function saveProduct(){
     const costPerPair =
         Number(document.getElementById("costPerPair").value) || 0;
 
+
     const colors = getColors();
 
 
@@ -788,12 +819,14 @@ async function saveProduct(){
 
     }
 
+
     if(!supplier){
 
         alert("يرجى إدخال اسم المورد");
         return;
 
     }
+
 
     if(cartons <= 0){
 
@@ -802,6 +835,7 @@ async function saveProduct(){
 
     }
 
+
     if(pairsPerCarton <= 0){
 
         alert("يرجى إدخال عدد الأزواج داخل الكرتونة");
@@ -809,12 +843,14 @@ async function saveProduct(){
 
     }
 
+
     if(costPerPair < 0){
 
         alert("يرجى إدخال سعر صحيح");
         return;
 
     }
+
 
     if(colors.length === 0){
 
@@ -824,8 +860,6 @@ async function saveProduct(){
     }
 
 
-    /* مجموع الألوان */
-
     let colorCartons = 0;
 
     colors.forEach(color => {
@@ -834,6 +868,8 @@ async function saveProduct(){
 
     });
 
+
+    /* أهم شرط */
 
     if(colorCartons !== cartons){
 
@@ -855,10 +891,6 @@ async function saveProduct(){
         totalPairs * costPerPair;
 
 
-    const imageFile =
-        document.getElementById("productImage").files[0];
-
-
     button.disabled = true;
 
     button.innerText = "⏳ جاري الحفظ...";
@@ -868,7 +900,26 @@ async function saveProduct(){
 
     try{
 
+        /* التأكد أن Firebase شغال */
+
+        if(typeof firebase === "undefined"){
+
+            throw new Error(
+                "Firebase غير محمل"
+            );
+
+        }
+
+
+        const db = firebase.firestore();
+
+
+        /* الصورة */
+
         let imageUrl = "";
+
+        const imageFile =
+            document.getElementById("productImage").files[0];
 
 
         if(imageFile){
@@ -882,40 +933,50 @@ async function saveProduct(){
         }
 
 
+        /* الحفظ */
+
         message.textContent =
             "⏳ جاري حفظ الموديل...";
 
 
-        await db.collection("products").add({
+        const productData = {
 
-            model:model,
+            model: model,
 
-            supplier:supplier,
+            supplier: supplier,
 
-            cartons:cartons,
+            cartons: cartons,
 
-            pairsPerCarton:pairsPerCarton,
+            pairsPerCarton: pairsPerCarton,
 
-            costPerPair:costPerPair,
+            costPerPair: costPerPair,
 
-            totalPairs:totalPairs,
+            totalPairs: totalPairs,
 
-            totalCapital:totalCapital,
+            totalCapital: totalCapital,
 
-            colors:colors,
+            colors: colors,
 
-            imageUrl:imageUrl,
+            imageUrl: imageUrl,
 
             createdAt:
                 firebase.firestore.FieldValue.serverTimestamp()
 
-        });
+        };
 
+
+        await db
+            .collection("products")
+            .add(productData);
+
+
+        /* نجاح */
 
         message.textContent =
             "✅ تم حفظ الموديل بنجاح";
 
-        message.style.color = "#38d66b";
+        message.style.color =
+            "#38d66b";
 
 
         /* تنظيف */
@@ -947,26 +1008,33 @@ async function saveProduct(){
         console.error(error);
 
         message.textContent =
-            "❌ حدث خطأ أثناء الحفظ";
+            "❌ فشل الحفظ";
 
-        message.style.color = "#ff4d4d";
+        message.style.color =
+            "#ff4d4d";
+
 
         alert(
-            "خطأ أثناء الحفظ:\n\n" +
+            "❌ لم يتم الحفظ\n\n" +
             error.message
         );
+
 
     }finally{
 
         button.disabled = false;
 
-        button.innerText = "💾 حفظ الموديل";
+        button.innerText =
+            "💾 حفظ الموديل";
 
     }
+
 }
 
 
-/* أول لون */
+/* =========================
+   تشغيل أول لون
+========================= */
 
 addColor();
 
