@@ -30,9 +30,9 @@ async function saveProduct() {
         document.querySelector(".save-btn");
 
 
-    /* =========================
-       التحقق من البيانات
-    ========================= */
+    // =========================
+    // التحقق
+    // =========================
 
     if (!model) {
         alert("يرجى إدخال رقم الموديل");
@@ -60,11 +60,11 @@ async function saveProduct() {
     }
 
 
-    /* =========================
-       جمع الألوان
-    ========================= */
+    // =========================
+    // جمع الألوان
+    // =========================
 
-    const colorRows =
+    const rows =
         document.querySelectorAll(
             "#colors .color-row"
         );
@@ -74,30 +74,55 @@ async function saveProduct() {
     let colorCartons = 0;
 
 
-    colorRows.forEach(row => {
+    rows.forEach(row => {
 
         const select =
             row.querySelector("select");
-
-        const input =
-            row.querySelector(".quantity");
 
         const colorName =
             select
                 ? select.value.trim()
                 : "";
 
-        const quantity =
-            input
-                ? Number(input.value) || 0
-                : 0;
+
+        // يدعم خانة الرقم الجديدة
+        const numberInput =
+            row.querySelector(
+                ".quantity-input, input[type='number']"
+            );
+
+
+        // ويدعم الشكل القديم
+        const quantityElement =
+            row.querySelector(".quantity");
+
+
+        let quantity = 0;
+
+
+        if (numberInput) {
+
+            quantity =
+                Number(numberInput.value) || 0;
+
+        } else if (quantityElement) {
+
+            quantity =
+                Number(quantityElement.value) ||
+                Number(quantityElement.textContent) ||
+                0;
+
+        }
 
 
         if (colorName) {
 
             colors.push({
+
                 name: colorName,
+
                 cartons: quantity
+
             });
 
             colorCartons += quantity;
@@ -107,9 +132,9 @@ async function saveProduct() {
     });
 
 
-    /* =========================
-       التحقق من الألوان
-    ========================= */
+    // =========================
+    // التحقق من مجموع الألوان
+    // =========================
 
     if (colors.length === 0) {
 
@@ -124,33 +149,38 @@ async function saveProduct() {
     if (colorCartons !== cartons) {
 
         alert(
-            "لا يمكن الحفظ لأن مجموع كراتين الألوان لا يساوي إجمالي الكراتين."
+            "❌ مجموع كراتين الألوان لا يساوي إجمالي الكراتين.\n\n" +
+            "إجمالي الكراتين: " + cartons +
+            "\nمجموع الألوان: " + colorCartons
         );
 
         return;
     }
 
 
-    /* =========================
-       الحسابات
-    ========================= */
+    // =========================
+    // الحسابات
+    // =========================
 
     const totalPairs =
         cartons * pairsPerCarton;
-
 
     const totalCapital =
         totalPairs * costPerPair;
 
 
-    /* =========================
-       تعطيل زر الحفظ
-    ========================= */
+    // =========================
+    // بدء الحفظ
+    // =========================
 
-    button.disabled = true;
+    if (button) {
 
-    button.innerText =
-        "⏳ جاري الحفظ...";
+        button.disabled = true;
+
+        button.innerText =
+            "⏳ جاري الحفظ...";
+
+    }
 
 
     try {
@@ -187,68 +217,70 @@ async function saveProduct() {
             });
 
 
-        /* =========================
-           نجاح الحفظ
-        ========================= */
+        // =========================
+        // نجاح
+        // =========================
 
-        message.innerText =
-            "✅ تم حفظ الموديل بنجاح";
+        if (message) {
 
-        message.style.color =
-            "#38d66b";
+            message.textContent =
+                "✅ تم حفظ الموديل بنجاح";
+
+            message.style.color =
+                "#38d66b";
+
+        }
 
 
-        /* تنظيف البيانات */
+        alert("✅ تم حفظ الموديل بنجاح");
+
+
+        // تنظيف الحقول
 
         document.getElementById(
             "model"
         ).value = "";
 
-
         document.getElementById(
             "supplier"
         ).value = "";
-
 
         document.getElementById(
             "totalCartons"
         ).value = "";
 
-
         document.getElementById(
             "pairsPerCarton"
         ).value = "";
-
 
         document.getElementById(
             "costPerPair"
         ).value = "";
 
 
-        /* تنظيف الألوان */
+        // تنظيف الألوان
 
         document.getElementById(
             "colors"
         ).innerHTML = "";
 
 
-        /* إضافة لون جديد فارغ */
+        // إضافة لون جديد
 
-        addColor();
+        if (typeof addColor === "function") {
+
+            addColor();
+
+        }
 
 
-        /* إعادة الحساب */
+        // إعادة الحساب
 
-        calculate();
+        if (typeof calculate === "function") {
 
+            calculate();
 
-        /* تنظيف رسالة الحفظ بعد فترة */
-
-        setTimeout(() => {
-
-            message.innerText = "";
-
-        }, 4000);
+        }
 
 
     } catch (error) {
@@ -259,25 +291,33 @@ async function saveProduct() {
         );
 
 
-        message.innerText =
-            "❌ حدث خطأ أثناء الحفظ";
+        if (message) {
 
-        message.style.color =
-            "#ff4444";
+            message.textContent =
+                "❌ فشل الحفظ";
+
+            message.style.color =
+                "red";
+
+        }
 
 
         alert(
-            "خطأ أثناء الحفظ:\n" +
+            "❌ فشل الحفظ:\n\n" +
             error.message
         );
 
 
     } finally {
 
-        button.disabled = false;
+        if (button) {
 
-        button.innerText =
-            "💾 حفظ الموديل";
+            button.disabled = false;
+
+            button.innerText =
+                "💾 حفظ الموديل";
+
+        }
 
     }
 
