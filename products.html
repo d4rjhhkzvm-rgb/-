@@ -2,14 +2,12 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>موديل جديد - CENTER ALBAZIKI</title>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
@@ -61,8 +59,6 @@ body{
     color:#111;
 }
 
-/* الصورة */
-
 .image-box{
     text-align:center;
     margin-bottom:20px;
@@ -95,8 +91,6 @@ body{
     color:white;
     width:100%;
 }
-
-/* الألوان */
 
 .color-title{
     color:#d4af37;
@@ -141,8 +135,6 @@ body{
     color:white;
     font-size:20px;
 }
-
-/* الكمية */
 
 .color-stock{
     display:flex;
@@ -200,8 +192,6 @@ body{
     font-weight:bold;
 }
 
-/* الحسابات */
-
 .summary{
     margin-top:22px;
     background:#111;
@@ -240,8 +230,6 @@ body{
     margin-top:12px;
 }
 
-/* الحفظ */
-
 .save-btn{
     width:100%;
     margin-top:22px;
@@ -265,25 +253,18 @@ body{
     font-weight:bold;
     min-height:25px;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <div class="product-page">
 
-<h1 class="title">
-📦 إضافة موديل
-</h1>
+<h1 class="title">📦 إضافة موديل</h1>
 
 <div class="form-box">
 
-
-<!-- =========================
-     صورة الموديل
-========================= -->
+<!-- الصورة -->
 
 <div class="image-box">
 
@@ -302,9 +283,7 @@ body{
 </div>
 
 
-<!-- =========================
-     رقم الموديل
-========================= -->
+<!-- رقم الموديل -->
 
 <div class="field">
 
@@ -319,9 +298,7 @@ body{
 </div>
 
 
-<!-- =========================
-     المورد
-========================= -->
+<!-- المورد -->
 
 <div class="field">
 
@@ -336,9 +313,7 @@ body{
 </div>
 
 
-<!-- =========================
-     إجمالي الكراتين
-========================= -->
+<!-- الكراتين -->
 
 <div class="field">
 
@@ -357,9 +332,7 @@ body{
 </div>
 
 
-<!-- =========================
-     الألوان
-========================= -->
+<!-- الألوان -->
 
 <div class="field">
 
@@ -380,9 +353,7 @@ body{
 </div>
 
 
-<!-- =========================
-     الأزواج
-========================= -->
+<!-- الأزواج -->
 
 <div class="field">
 
@@ -401,9 +372,7 @@ body{
 </div>
 
 
-<!-- =========================
-     السعر
-========================= -->
+<!-- السعر -->
 
 <div class="field">
 
@@ -422,76 +391,36 @@ body{
 </div>
 
 
-<!-- =========================
-     الحسابات
-========================= -->
+<!-- الحسابات -->
 
 <div class="summary">
 
     <div class="summary-item">
-
         <span>📦 إجمالي الكراتين</span>
-
-        <span
-            id="totalCartonsDisplay"
-            class="summary-value"
-        >
-            0
-        </span>
-
+        <span id="totalCartonsDisplay" class="summary-value">0</span>
     </div>
 
-
     <div class="summary-item">
-
         <span>🎨 مجموع كراتين الألوان</span>
-
-        <span
-            id="colorCartonsDisplay"
-            class="summary-value"
-        >
-            0
-        </span>
-
+        <span id="colorCartonsDisplay" class="summary-value">0</span>
     </div>
 
-
     <div class="summary-item">
-
         <span>👞 إجمالي الأزواج</span>
-
-        <span
-            id="totalPairsDisplay"
-            class="summary-value"
-        >
-            0
-        </span>
-
+        <span id="totalPairsDisplay" class="summary-value">0</span>
     </div>
-
 
     <div class="summary-item">
-
         <span>💰 إجمالي رأس المال</span>
-
-        <span
-            id="totalCapitalDisplay"
-            class="summary-value"
-        >
-            $0.00
-        </span>
-
+        <span id="totalCapitalDisplay" class="summary-value">$0.00</span>
     </div>
-
 
     <div id="validationMessage"></div>
 
 </div>
 
 
-<!-- =========================
-     زر الحفظ
-========================= -->
+<!-- الحفظ -->
 
 <button
     type="button"
@@ -502,15 +431,12 @@ body{
     💾 حفظ الموديل
 </button>
 
-
 <div
     id="saveMessage"
     class="save-message"
 ></div>
 
-
 </div>
-
 </div>
 
 
@@ -519,6 +445,8 @@ body{
 ========================= -->
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
@@ -534,14 +462,7 @@ body{
 ========================= */
 
 const db = firebase.firestore();
-
-let storage = null;
-
-try{
-    storage = firebase.storage();
-}catch(error){
-    console.log("Firebase Storage غير متاح");
-}
+const storage = firebase.storage();
 
 
 /* =========================
@@ -550,66 +471,43 @@ try{
 
 function previewImage(event){
 
-    const file =
-        event.target.files[0];
+    const file = event.target.files[0];
 
     if(!file) return;
 
-    const reader =
-        new FileReader();
+    const reader = new FileReader();
 
-    reader.onload =
-        function(e){
+    reader.onload = function(e){
 
-            document.getElementById(
-                "imagePreview"
-            ).innerHTML = `
-                <img
-                    src="${e.target.result}"
-                    alt="صورة الموديل"
-                >
-            `;
+        document.getElementById("imagePreview").innerHTML =
+            '<img src="' + e.target.result + '" alt="صورة الموديل">';
 
-        };
+    };
 
     reader.readAsDataURL(file);
 }
 
 
 /* =========================
-   خيارات الألوان
+   الألوان
 ========================= */
 
 function colorOptions(){
 
     return `
-
         <option value="">اختر اللون</option>
-
         <option value="أسود">أسود</option>
-
         <option value="بني">بني</option>
-
         <option value="عسلي">عسلي</option>
-
         <option value="موغا">موغا</option>
-
         <option value="أبيض">أبيض</option>
-
         <option value="بيج">بيج</option>
-
         <option value="كحلي">كحلي</option>
-
         <option value="رمادي">رمادي</option>
-
         <option value="أحمر">أحمر</option>
-
         <option value="أخضر">أخضر</option>
-
         <option value="أزرق">أزرق</option>
-
     `;
-
 }
 
 
@@ -619,14 +517,11 @@ function colorOptions(){
 
 function addColor(){
 
-    const container =
-        document.getElementById("colors");
+    const container = document.getElementById("colors");
 
-    const row =
-        document.createElement("div");
+    const row = document.createElement("div");
 
-    row.className =
-        "color-row";
+    row.className = "color-row";
 
     row.innerHTML = `
 
@@ -634,43 +529,31 @@ function addColor(){
 
             <div class="color-name">
 
-                <select
-                    onchange="calculate()"
-                >
-
+                <select onchange="calculate()">
                     ${colorOptions()}
-
                 </select>
 
             </div>
 
-
             <button
                 type="button"
                 class="delete-color"
-                onclick="
-                    this.closest('.color-row').remove();
-                    calculate();
-                "
+                onclick="removeColor(this)"
             >
                 ×
             </button>
 
         </div>
 
-
         <div class="color-stock">
 
             <button
                 type="button"
                 class="stock-btn minus-btn"
-                onclick="
-                    changeColorQuantity(this,-1)
-                "
+                onclick="changeColorQuantity(this,-1)"
             >
                 −
             </button>
-
 
             <div>
 
@@ -690,19 +573,15 @@ function addColor(){
 
             </div>
 
-
             <button
                 type="button"
                 class="stock-btn plus-btn"
-                onclick="
-                    changeColorQuantity(this,1)
-                "
+                onclick="changeColorQuantity(this,1)"
             >
                 +
             </button>
 
         </div>
-
     `;
 
     container.appendChild(row);
@@ -712,22 +591,28 @@ function addColor(){
 
 
 /* =========================
+   حذف لون
+========================= */
+
+function removeColor(button){
+
+    button.closest(".color-row").remove();
+
+    calculate();
+}
+
+
+/* =========================
    + و -
 ========================= */
 
-function changeColorQuantity(
-    button,
-    amount
-){
+function changeColorQuantity(button,amount){
 
-    const row =
-        button.closest(".color-row");
+    const row = button.closest(".color-row");
 
-    const input =
-        row.querySelector(".quantity");
+    const input = row.querySelector(".quantity");
 
-    let value =
-        Number(input.value) || 0;
+    let value = Number(input.value) || 0;
 
     value += amount;
 
@@ -747,119 +632,62 @@ function changeColorQuantity(
 
 function calculate(){
 
-    const totalCartons =
-        Number(
-            document.getElementById(
-                "totalCartons"
-            ).value
-        ) || 0;
+    const cartons =
+        Number(document.getElementById("totalCartons").value) || 0;
 
+    const pairs =
+        Number(document.getElementById("pairsPerCarton").value) || 0;
 
-    const pairsPerCarton =
-        Number(
-            document.getElementById(
-                "pairsPerCarton"
-            ).value
-        ) || 0;
-
-
-    const costPerPair =
-        Number(
-            document.getElementById(
-                "costPerPair"
-            ).value
-        ) || 0;
-
+    const price =
+        Number(document.getElementById("costPerPair").value) || 0;
 
     let colorCartons = 0;
 
+    document.querySelectorAll("#colors .color-row").forEach(row => {
 
-    document
-        .querySelectorAll(
-            "#colors .color-row"
-        )
-        .forEach(row => {
+        const input = row.querySelector(".quantity");
 
-            const input =
-                row.querySelector(
-                    ".quantity"
-                );
+        colorCartons += Number(input.value) || 0;
 
-            colorCartons +=
-                Number(input.value) || 0;
+    });
 
-        });
+    const totalPairs = cartons * pairs;
 
+    const totalCapital = totalPairs * price;
 
-    const totalPairs =
-        totalCartons *
-        pairsPerCarton;
+    document.getElementById("totalCartonsDisplay").textContent =
+        cartons;
 
-
-    const totalCapital =
-        totalPairs *
-        costPerPair;
-
-
-    document.getElementById(
-        "totalCartonsDisplay"
-    ).textContent =
-        totalCartons;
-
-
-    document.getElementById(
-        "colorCartonsDisplay"
-    ).textContent =
+    document.getElementById("colorCartonsDisplay").textContent =
         colorCartons;
 
-
-    document.getElementById(
-        "totalPairsDisplay"
-    ).textContent =
+    document.getElementById("totalPairsDisplay").textContent =
         totalPairs;
 
-
-    document.getElementById(
-        "totalCapitalDisplay"
-    ).textContent =
-        "$" +
-        totalCapital.toFixed(2);
-
+    document.getElementById("totalCapitalDisplay").textContent =
+        "$" + totalCapital.toFixed(2);
 
     const message =
-        document.getElementById(
-            "validationMessage"
-        );
+        document.getElementById("validationMessage");
 
-
-    if(totalCartons === 0){
+    if(cartons === 0){
 
         message.className = "";
-
         message.textContent = "";
 
-        return;
-    }
+    }else if(colorCartons === cartons){
 
-
-    if(colorCartons === totalCartons){
-
-        message.className =
-            "success";
-
+        message.className = "success";
         message.textContent =
             "✅ مجموع الألوان مطابق لعدد الكراتين";
 
     }else{
 
-        message.className =
-            "warning";
-
+        message.className = "warning";
         message.textContent =
             "❌ مجموع كراتين الألوان يجب أن يساوي إجمالي الكراتين";
 
     }
-
 }
 
 
@@ -871,43 +699,26 @@ function getColors(){
 
     const colors = [];
 
-    document
-        .querySelectorAll(
-            "#colors .color-row"
-        )
-        .forEach(row => {
+    document.querySelectorAll("#colors .color-row").forEach(row => {
 
-            const select =
-                row.querySelector("select");
+        const select = row.querySelector("select");
 
-            const input =
-                row.querySelector(".quantity");
+        const input = row.querySelector(".quantity");
 
-            const name =
-                select
-                ? select.value.trim()
-                : "";
+        const name = select.value.trim();
 
-            const cartons =
-                input
-                ? Number(input.value) || 0
-                : 0;
+        const cartons = Number(input.value) || 0;
 
+        if(name){
 
-            if(name){
+            colors.push({
+                name:name,
+                cartons:cartons
+            });
 
-                colors.push({
+        }
 
-                    name:name,
-
-                    cartons:cartons
-
-                });
-
-            }
-
-        });
-
+    });
 
     return colors;
 }
@@ -919,238 +730,140 @@ function getColors(){
 
 async function uploadImage(file){
 
-    if(!file || !storage){
-
+    if(!file){
         return "";
-
     }
-
-
-    const safeName =
-        file.name
-        .replace(/[^a-zA-Z0-9._-]/g,"_");
-
 
     const fileName =
         "products/" +
         Date.now() +
         "_" +
-        safeName;
+        file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
 
+    const ref = storage.ref().child(fileName);
 
-    const storageRef =
-        storage
-        .ref()
-        .child(fileName);
+    await ref.put(file);
 
-
-    await storageRef.put(file);
-
-
-    const url =
-        await storageRef.getDownloadURL();
-
-
-    return url;
+    return await ref.getDownloadURL();
 }
 
 
 /* =========================
-   حفظ الموديل
+   حفظ المنتج
 ========================= */
 
 async function saveProduct(){
 
-    const model =
-        document.getElementById(
-            "model"
-        ).value.trim();
-
-
-    const supplier =
-        document.getElementById(
-            "supplier"
-        ).value.trim();
-
-
-    const cartons =
-        Number(
-            document.getElementById(
-                "totalCartons"
-            ).value
-        ) || 0;
-
-
-    const pairsPerCarton =
-        Number(
-            document.getElementById(
-                "pairsPerCarton"
-            ).value
-        ) || 0;
-
-
-    const costPerPair =
-        Number(
-            document.getElementById(
-                "costPerPair"
-            ).value
-        ) || 0;
-
-
-    const colors =
-        getColors();
-
+    const button =
+        document.getElementById("saveProductBtn");
 
     const message =
-        document.getElementById(
-            "saveMessage"
-        );
+        document.getElementById("saveMessage");
 
 
-    const button =
-        document.getElementById(
-            "saveProductBtn"
-        );
+    const model =
+        document.getElementById("model").value.trim();
+
+    const supplier =
+        document.getElementById("supplier").value.trim();
+
+    const cartons =
+        Number(document.getElementById("totalCartons").value) || 0;
+
+    const pairsPerCarton =
+        Number(document.getElementById("pairsPerCarton").value) || 0;
+
+    const costPerPair =
+        Number(document.getElementById("costPerPair").value) || 0;
+
+    const colors = getColors();
 
 
-    /* =========================
-       التحقق
-    ========================= */
+    /* التحقق */
 
     if(!model){
 
-        alert(
-            "يرجى إدخال رقم الموديل"
-        );
-
+        alert("يرجى إدخال رقم الموديل");
         return;
-    }
 
+    }
 
     if(!supplier){
 
-        alert(
-            "يرجى إدخال اسم المورد"
-        );
-
+        alert("يرجى إدخال اسم المورد");
         return;
-    }
 
+    }
 
     if(cartons <= 0){
 
-        alert(
-            "يرجى إدخال عدد الكراتين"
-        );
-
+        alert("يرجى إدخال عدد الكراتين");
         return;
-    }
 
+    }
 
     if(pairsPerCarton <= 0){
 
-        alert(
-            "يرجى إدخال عدد الأزواج داخل الكرتونة"
-        );
-
+        alert("يرجى إدخال عدد الأزواج داخل الكرتونة");
         return;
-    }
 
+    }
 
     if(costPerPair < 0){
 
-        alert(
-            "يرجى إدخال سعر صحيح"
-        );
-
+        alert("يرجى إدخال سعر صحيح");
         return;
-    }
 
+    }
 
     if(colors.length === 0){
 
-        alert(
-            "يرجى إضافة لون واحد على الأقل"
-        );
-
+        alert("يرجى إضافة لون واحد على الأقل");
         return;
+
     }
 
 
-    /* =========================
-       حساب مجموع الألوان
-    ========================= */
+    /* مجموع الألوان */
 
     let colorCartons = 0;
 
-
     colors.forEach(color => {
 
-        colorCartons +=
-            Number(color.cartons) || 0;
+        colorCartons += Number(color.cartons) || 0;
 
     });
 
 
-    /* =========================
-       مطابقة الكراتين
-    ========================= */
-
     if(colorCartons !== cartons){
 
         alert(
-
             "❌ لا يمكن الحفظ\n\n" +
-
-            "إجمالي الكراتين: " +
-            cartons +
-
-            "\n" +
-
-            "مجموع كراتين الألوان: " +
-            colorCartons
-
+            "إجمالي الكراتين: " + cartons +
+            "\nمجموع الألوان: " + colorCartons
         );
 
         return;
+
     }
 
 
-    /* =========================
-       الحسابات
-    ========================= */
-
     const totalPairs =
-        cartons *
-        pairsPerCarton;
-
+        cartons * pairsPerCarton;
 
     const totalCapital =
-        totalPairs *
-        costPerPair;
+        totalPairs * costPerPair;
 
-
-    /* =========================
-       الصورة
-    ========================= */
 
     const imageFile =
-        document.getElementById(
-            "productImage"
-        ).files[0];
+        document.getElementById("productImage").files[0];
 
-
-    /* =========================
-       بدء الحفظ
-    ========================= */
 
     button.disabled = true;
 
-    button.innerText =
-        "⏳ جاري الحفظ...";
+    button.innerText = "⏳ جاري الحفظ...";
 
-    message.textContent =
-        "";
+    message.textContent = "";
 
 
     try{
@@ -1158,114 +871,71 @@ async function saveProduct(){
         let imageUrl = "";
 
 
-        /* رفع الصورة إذا موجودة */
-
         if(imageFile){
 
             message.textContent =
                 "⏳ جاري رفع الصورة...";
 
             imageUrl =
-                await uploadImage(
-                    imageFile
-                );
+                await uploadImage(imageFile);
 
         }
 
-
-        /* حفظ المنتج */
 
         message.textContent =
             "⏳ جاري حفظ الموديل...";
 
 
-        await db
-            .collection("products")
-            .add({
+        await db.collection("products").add({
 
-                model:model,
+            model:model,
 
-                supplier:supplier,
+            supplier:supplier,
 
-                cartons:cartons,
+            cartons:cartons,
 
-                pairsPerCarton:
-                    pairsPerCarton,
+            pairsPerCarton:pairsPerCarton,
 
-                costPerPair:
-                    costPerPair,
+            costPerPair:costPerPair,
 
-                totalPairs:
-                    totalPairs,
+            totalPairs:totalPairs,
 
-                totalCapital:
-                    totalCapital,
+            totalCapital:totalCapital,
 
-                colors:colors,
+            colors:colors,
 
-                imageUrl:imageUrl,
+            imageUrl:imageUrl,
 
-                createdAt:
-                    firebase.firestore
-                    .FieldValue
-                    .serverTimestamp()
+            createdAt:
+                firebase.firestore.FieldValue.serverTimestamp()
 
-            });
+        });
 
-
-        /* =========================
-           نجاح
-        ========================= */
 
         message.textContent =
             "✅ تم حفظ الموديل بنجاح";
 
-        message.style.color =
-            "#38d66b";
+        message.style.color = "#38d66b";
 
 
-        /* تنظيف الحقول */
+        /* تنظيف */
 
-        document.getElementById(
-            "model"
-        ).value = "";
+        document.getElementById("model").value = "";
 
+        document.getElementById("supplier").value = "";
 
-        document.getElementById(
-            "supplier"
-        ).value = "";
+        document.getElementById("totalCartons").value = "";
 
+        document.getElementById("pairsPerCarton").value = "";
 
-        document.getElementById(
-            "totalCartons"
-        ).value = "";
+        document.getElementById("costPerPair").value = "";
 
+        document.getElementById("productImage").value = "";
 
-        document.getElementById(
-            "pairsPerCarton"
-        ).value = "";
-
-
-        document.getElementById(
-            "costPerPair"
-        ).value = "";
-
-
-        document.getElementById(
-            "productImage"
-        ).value = "";
-
-
-        document.getElementById(
-            "imagePreview"
-        ).innerHTML =
+        document.getElementById("imagePreview").innerHTML =
             "<span>📷 صورة الموديل</span>";
 
-
-        document.getElementById(
-            "colors"
-        ).innerHTML = "";
-
+        document.getElementById("colors").innerHTML = "";
 
         addColor();
 
@@ -1274,41 +944,29 @@ async function saveProduct(){
 
     }catch(error){
 
-        console.error(
-            "Firebase Error:",
-            error
-        );
-
+        console.error(error);
 
         message.textContent =
             "❌ حدث خطأ أثناء الحفظ";
 
-
-        message.style.color =
-            "#ff4d4d";
-
+        message.style.color = "#ff4d4d";
 
         alert(
             "خطأ أثناء الحفظ:\n\n" +
             error.message
         );
 
-
     }finally{
 
         button.disabled = false;
 
-        button.innerText =
-            "💾 حفظ الموديل";
+        button.innerText = "💾 حفظ الموديل";
 
     }
-
 }
 
 
-/* =========================
-   أول لون تلقائياً
-========================= */
+/* أول لون */
 
 addColor();
 
@@ -1317,5 +975,4 @@ calculate();
 </script>
 
 </body>
-
 </html>
